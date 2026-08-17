@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="data:," />
+    <title>GetFullPage E2E fixture</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background: #ffffff;
+        font-family: sans-serif;
+      }
+      /* Fixed header that must appear once at the top and be de-duplicated on later slices. */
+      #hdr {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 60px;
+        background: rgb(220, 20, 60); /* crimson */
+        color: #fff;
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        padding-left: 16px;
+      }
+      #page {
+        position: relative;
+        height: 4000px;
+      }
+      #top {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 200px;
+        background: rgb(0, 160, 60); /* green */
+      }
+      #bottom {
+        position: absolute;
+        top: 3800px;
+        left: 0;
+        width: 100%;
+        height: 200px;
+        background: rgb(20, 60, 220); /* blue */
+      }
+      /* Sticky sidebar + floating chat button exercise fixed/sticky de-dup too. */
+      #chat {
+        position: fixed;
+        right: 16px;
+        bottom: 16px;
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: rgb(255, 165, 0);
+        z-index: 1000;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="hdr">Fixed header</div>
+    <div id="page">
+      <div id="top">Top green band</div>
+      <div id="bottom">Bottom blue band</div>
+    </div>
+    <div id="chat"></div>
+  </body>
+</html>

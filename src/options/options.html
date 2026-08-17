@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GetFullPage — Settings</title>
+    <link rel="stylesheet" href="./options.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header>
+        <div class="brand">
+          <img src="../icons/icon-48.png" width="28" height="28" alt="" />
+          <div>
+            <h1>GetFullPage Settings</h1>
+            <p class="sub">Everything is stored locally. No account, no server, nothing uploaded.</p>
+          </div>
+        </div>
+        <span id="saved" class="saved" hidden>Saved</span>
+      </header>
+
+      <section>
+        <h2>Capture output</h2>
+        <div class="row">
+          <label for="defaultFormat">Default format</label>
+          <select id="defaultFormat">
+            <option value="png">PNG (lossless)</option>
+            <option value="jpeg">JPEG</option>
+          </select>
+        </div>
+        <div class="row">
+          <label for="jpegQuality">JPEG quality <span id="jpegQualityVal" class="mono"></span></label>
+          <input id="jpegQuality" type="range" min="0.6" max="1" step="0.01" />
+        </div>
+        <div class="row">
+          <label for="postCapture">After capture</label>
+          <select id="postCapture">
+            <option value="preview">Open preview</option>
+            <option value="download">Auto-download</option>
+          </select>
+        </div>
+      </section>
+
+      <section>
+        <h2>Files</h2>
+        <div class="row">
+          <label for="filenameTemplate">Filename template</label>
+          <input id="filenameTemplate" type="text" spellcheck="false" />
+        </div>
+        <p class="hint">
+          Tokens: <code>{title}</code> <code>{host}</code> <code>{date}</code> <code>{time}</code>
+          <code>{width}</code> <code>{height}</code>. Example: <span id="filenamePreview" class="mono"></span>
+        </p>
+        <div class="row">
+          <label for="downloadSubfolder">Downloads subfolder <span class="muted">(optional)</span></label>
+          <input id="downloadSubfolder" type="text" spellcheck="false" placeholder="e.g. screenshots" />
+        </div>
+        <p class="hint" id="downloadsPermHint" hidden>
+          Auto-download and subfolders use the browser’s optional <code>downloads</code> permission,
+          requested only when you enable them.
+        </p>
+      </section>
+
+      <section id="mobileSection">
+        <h2>Mobile capture <span class="muted">(Chromium)</span></h2>
+        <div class="row checkbox">
+          <input id="mobileEmulation" type="checkbox" />
+          <label for="mobileEmulation">Capture as mobile by default</label>
+        </div>
+        <div class="row">
+          <label for="mobileDevice">Device</label>
+          <select id="mobileDevice"></select>
+        </div>
+        <p class="hint" id="mobilePermHint">
+          Emulates a phone viewport, pixel ratio, and user-agent <strong>locally</strong> using the optional
+          <code>debugger</code> permission, requested only when you turn this on. Available on Chromium browsers;
+          close DevTools on the page before capturing.
+        </p>
+      </section>
+
+      <section>
+        <h2>Capture engine</h2>
+        <div class="row">
+          <label for="settleDelay">Scroll settle delay</label>
+          <select id="settleDelay">
+            <option value="auto">Auto</option>
+            <option value="100">100 ms</option>
+            <option value="250">250 ms</option>
+            <option value="500">500 ms</option>
+            <option value="1000">1000 ms</option>
+          </select>
+        </div>
+        <div class="row checkbox">
+          <input id="freezeAnimations" type="checkbox" />
+          <label for="freezeAnimations">Freeze CSS animations &amp; transitions during capture</label>
+        </div>
+        <div class="row">
+          <label for="fixedHandling">Fixed / sticky elements</label>
+          <select id="fixedHandling">
+            <option value="hide-repeated">Hide repeated headers/footers on later slices</option>
+            <option value="keep-all">Keep all fixed elements</option>
+          </select>
+        </div>
+        <div class="row">
+          <label for="maxPageHeightPx">Maximum page height (px)</label>
+          <input id="maxPageHeightPx" type="number" min="2000" max="200000" step="1000" />
+        </div>
+        <div class="row">
+          <label for="maxSlices">Maximum slices</label>
+          <input id="maxSlices" type="number" min="4" max="2000" step="1" />
+        </div>
+        <div class="row">
+          <label for="memoryCeilingMiB">Memory ceiling (MiB)</label>
+          <input id="memoryCeilingMiB" type="number" min="64" max="4096" step="64" />
+        </div>
+      </section>
+
+      <section>
+        <h2>PDF defaults</h2>
+        <div class="row">
+          <label for="pdfPaper">Paper</label>
+          <select id="pdfPaper">
+            <option value="a4">A4</option>
+            <option value="letter">Letter</option>
+            <option value="legal">Legal</option>
+            <option value="fit">Fit to image width</option>
+          </select>
+        </div>
+        <div class="row">
+          <label for="pdfOrientation">Orientation</label>
+          <select id="pdfOrientation">
+            <option value="auto">Auto</option>
+            <option value="portrait">Portrait</option>
+            <option value="landscape">Landscape</option>
+          </select>
+        </div>
+        <div class="row">
+          <label for="pdfMargin">Margins</label>
+          <select id="pdfMargin">
+            <option value="none">None</option>
+            <option value="narrow">Narrow</option>
+            <option value="normal">Normal</option>
+          </select>
+        </div>
+        <div class="row checkbox">
+          <input id="pdfSmartBreaks" type="checkbox" />
+          <label for="pdfSmartBreaks">Smart page breaks (avoid cutting text lines)</label>
+        </div>
+        <div class="row checkbox">
+          <input id="pdfFooter" type="checkbox" />
+          <label for="pdfFooter">Add footer with title, URL, date &amp; page number</label>
+        </div>
+      </section>
+
+      <section>
+        <h2>Experimental <span class="muted">(feature flags)</span></h2>
+        <div class="row checkbox">
+          <input id="enableEditor" type="checkbox" />
+          <label for="enableEditor">Enable annotation editor (P1)</label>
+        </div>
+        <div class="row checkbox">
+          <input id="enableHistory" type="checkbox" />
+          <label for="enableHistory">Keep local capture history (P1)</label>
+        </div>
+      </section>
+
+      <section class="danger">
+        <h2>Reset</h2>
+        <button id="resetBtn" type="button" class="danger-btn">Reset all settings to defaults</button>
+      </section>
+
+      <footer>
+        <a href="#" id="privacyLink">Privacy</a>
+        <span class="muted">GetFullPage — capture stays on your device.</span>
+      </footer>
+    </div>
+
+    <script src="./options.js"></script>
+  </body>
+</html>

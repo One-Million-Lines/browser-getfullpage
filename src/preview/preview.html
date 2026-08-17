@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GetFullPage — Preview</title>
+    <link rel="stylesheet" href="./preview.css" />
+  </head>
+  <body>
+    <header class="toolbar" role="toolbar" aria-label="Capture actions">
+      <div class="brand">
+        <img src="../icons/icon-32.png" width="20" height="20" alt="" />
+        <span>GetFullPage</span>
+      </div>
+      <div class="group" id="exportGroup">
+        <button id="btnPng" type="button">Download PNG</button>
+        <button id="btnJpeg" type="button">Download JPEG</button>
+        <button id="btnPdf" type="button">Export PDF</button>
+        <button id="btnCopy" type="button">Copy</button>
+      </div>
+      <div class="group" id="editGroup">
+        <button id="btnCrop" type="button" aria-pressed="false">Crop</button>
+        <button id="btnRotate" type="button">Rotate</button>
+        <button id="btnReset" type="button" hidden>Reset edits</button>
+        <span id="metaDevice" class="pill" hidden></span>
+      </div>
+      <div class="group spacer">
+        <button id="btnMobile" type="button" hidden>Capture as mobile</button>
+        <button id="btnRetake" type="button">Retake</button>
+        <button id="btnSettings" type="button">Settings</button>
+      </div>
+    </header>
+
+    <div class="zoombar" role="toolbar" aria-label="Zoom controls">
+      <button id="btnFitWidth" type="button">Fit width</button>
+      <button id="btnFitPage" type="button">Fit page</button>
+      <button id="zoomOut" type="button" aria-label="Zoom out">−</button>
+      <span id="zoomLabel" aria-live="polite">100%</span>
+      <button id="zoomIn" type="button" aria-label="Zoom in">+</button>
+      <button id="zoom100" type="button">100%</button>
+    </div>
+
+    <main id="stage" class="stage" tabindex="0" aria-label="Captured image">
+      <div id="canvasWrap" class="canvas-wrap">
+        <img id="image" alt="Captured full page" />
+        <div id="cropLayer" class="crop-layer" hidden>
+          <div id="cropBox" class="crop-box">
+            <span class="handle nw"></span><span class="handle ne"></span>
+            <span class="handle sw"></span><span class="handle se"></span>
+          </div>
+          <div class="crop-actions">
+            <button id="cropApply" type="button">Apply crop</button>
+            <button id="cropCancel" type="button">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="statusbar">
+      <span id="metaName" class="mono"></span>
+      <span id="metaDims"></span>
+      <span id="metaSize"></span>
+      <span id="metaUrl" class="mono ellipsis"></span>
+      <span id="metaTime"></span>
+      <span id="metaWarn" class="warn" hidden></span>
+    </footer>
+
+    <div id="overlay" class="overlay">
+      <div class="card">
+        <div class="spinner" aria-hidden="true"></div>
+        <p id="overlayText">Preparing preview…</p>
+      </div>
+    </div>
+
+    <div id="errorView" class="error-view" hidden>
+      <div class="card">
+        <h1 id="errorTitle">Capture failed</h1>
+        <p id="errorText"></p>
+        <div class="error-actions">
+          <button id="errorRetry" type="button">Retry</button>
+          <button id="errorClose" type="button">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+    <script src="./preview.js"></script>
+  </body>
+</html>

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="data:," />
+    <title>Lazy-loading fixture</title>
+    <style>
+      body { margin: 0; font-family: system-ui, sans-serif; }
+      .card { height: 260px; margin: 20px; border-radius: 12px; background: #e5e7eb;
+        display: grid; place-items: center; font-size: 22px; color: #64748b; transition: background 0.2s; }
+      .card.loaded { background: linear-gradient(135deg, #10b981, #3b82f6); color: #fff; }
+    </style>
+  </head>
+  <body id="content"></body>
+  <script>
+    const body = document.getElementById('content');
+    const cards = [];
+    for (let i = 1; i <= 20; i++) {
+      const c = document.createElement('div');
+      c.className = 'card';
+      c.textContent = `Lazy card ${i} (not yet loaded)`;
+      body.appendChild(c);
+      cards.push(c);
+    }
+    // Reveal content only when scrolled into view — exercises real-scroll triggering.
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (e.isIntersecting) {
+          const c = e.target;
+          setTimeout(() => {
+            c.classList.add('loaded');
+            c.textContent = c.textContent.replace('(not yet loaded)', '(loaded)');
+          }, 80);
+          io.unobserve(c);
+        }
+      }
+    }, { rootMargin: '0px' });
+    cards.forEach((c) => io.observe(c));
+  </script>
+</html>

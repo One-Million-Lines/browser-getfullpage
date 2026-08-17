@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="data:," />
+    <title>Responsive fixture</title>
+    <style>
+      html, body { margin: 0; }
+      body { font-family: system-ui, sans-serif; }
+      /* Default = mobile styling (green). Desktop breakpoint overrides to red. */
+      .box { height: 300px; display: grid; place-items: center; color: #fff; font-size: 24px; background: rgb(0, 160, 60); }
+      .tag::after { content: 'MOBILE layout'; }
+      @media (min-width: 700px) {
+        .box { background: rgb(220, 20, 60); }
+        .tag::after { content: 'DESKTOP layout'; }
+      }
+    </style>
+  </head>
+  <body id="content"></body>
+  <script>
+    const body = document.getElementById('content');
+    for (let i = 1; i <= 6; i++) {
+      const d = document.createElement('div');
+      d.className = 'box';
+      d.innerHTML = `<span class="tag">Block ${i} — </span>`;
+      body.appendChild(d);
+    }
+  </script>
+</html>
