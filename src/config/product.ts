@@ -1,6 +1,6 @@
 /** Product identity and release metadata. Manifests are generated, not hand-edited. */
 
-export const RELEASE_VERSION = '1.0.0';
+export const RELEASE_VERSION = '1.1.1';
 
 /** Baseline that reliably supports MV3 service workers + offscreen documents. */
 export const MINIMUM_CHROME_VERSION = '116';

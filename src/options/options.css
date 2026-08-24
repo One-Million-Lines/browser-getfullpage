@@ -156,3 +156,67 @@ footer {
 footer a {
   color: var(--accent-2);
 }
+.footer-links {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.feedback-modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(2, 6, 23, 0.55);
+}
+.feedback-dialog {
+  width: min(100%, 420px);
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.28);
+}
+.feedback-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.feedback-head h2 {
+  margin: 0;
+}
+.feedback-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+.feedback-field textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+.feedback-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+.feedback-status {
+  font-size: 12.5px;
+  margin-bottom: 10px;
+}
+.feedback-status.success {
+  color: #22c55e;
+}
+.feedback-status.error {
+  color: #fca5a5;
+}
+.feedback-honeypot {
+  position: absolute;
+  left: -9999px;
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+}

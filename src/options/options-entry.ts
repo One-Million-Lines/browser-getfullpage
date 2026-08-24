@@ -39,6 +39,17 @@ const controls = {
   enableHistory: $<HTMLInputElement>('enableHistory'),
   resetBtn: $<HTMLButtonElement>('resetBtn'),
   saved: $('saved'),
+  feedbackLink: $<HTMLAnchorElement>('feedbackLink'),
+  feedbackModal: $('feedbackModal'),
+  feedbackForm: $<HTMLFormElement>('feedbackForm'),
+  feedbackType: $<HTMLSelectElement>('feedbackType'),
+  feedbackDescription: $<HTMLTextAreaElement>('feedbackDescription'),
+  feedbackHoneypot: $<HTMLInputElement>('feedbackHoneypot'),
+  feedbackError: $('feedbackError'),
+  feedbackSuccess: $('feedbackSuccess'),
+  feedbackCloseBtn: $<HTMLButtonElement>('feedbackCloseBtn'),
+  feedbackCancelBtn: $<HTMLButtonElement>('feedbackCancelBtn'),
+  feedbackSubmitBtn: $<HTMLButtonElement>('feedbackSubmitBtn'),
 };
 
 let settings: Settings = { ...DEFAULT_SETTINGS };
@@ -90,6 +101,61 @@ function render(): void {
 async function persist(): Promise<void> {
   await saveSettings(settings);
   flashSaved();
+}
+
+function setFeedbackOpen(open: boolean): void {
+  controls.feedbackModal.hidden = !open;
+  if (!open) return;
+  controls.feedbackError.hidden = true;
+  controls.feedbackSuccess.hidden = true;
+  controls.feedbackForm.hidden = false;
+  controls.feedbackDescription.focus();
+}
+
+function setFeedbackSubmitting(submitting: boolean): void {
+  controls.feedbackType.disabled = submitting;
+  controls.feedbackDescription.disabled = submitting;
+  controls.feedbackHoneypot.disabled = submitting;
+  controls.feedbackCloseBtn.disabled = submitting;
+  controls.feedbackCancelBtn.disabled = submitting;
+  controls.feedbackSubmitBtn.disabled = submitting;
+  controls.feedbackSubmitBtn.textContent = submitting ? 'Sending…' : 'Send feedback';
+}
+
+async function submitFeedback(event: SubmitEvent): Promise<void> {
+  event.preventDefault();
+  const description = controls.feedbackDescription.value.trim();
+  if (!description) {
+    controls.feedbackError.textContent = 'Please describe your feedback.';
+    controls.feedbackError.hidden = false;
+    return;
+  }
+
+  controls.feedbackError.hidden = true;
+  setFeedbackSubmitting(true);
+  try {
+    const response = await fetch('https://api.onemillionlines.com/api/extension-feedback', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        extension: 'getfullpage',
+        version: '1.0.0',
+        type: controls.feedbackType.value,
+        description,
+        honeypot: controls.feedbackHoneypot.value,
+        timestamp: new Date().toISOString(),
+      }),
+    });
+    if (!response.ok) throw new Error('Request failed');
+    controls.feedbackForm.reset();
+    controls.feedbackForm.hidden = true;
+    controls.feedbackSuccess.hidden = false;
+  } catch {
+    controls.feedbackError.textContent = 'Could not send feedback. Please try again.';
+    controls.feedbackError.hidden = false;
+  } finally {
+    setFeedbackSubmitting(false);
+  }
 }
 
 function collect(): void {
@@ -179,6 +245,19 @@ function wire(): void {
     settings = await resetSettings();
     render();
     flashSaved();
+  });
+
+  controls.feedbackLink.addEventListener('click', (event) => {
+    event.preventDefault();
+    setFeedbackOpen(true);
+  });
+  controls.feedbackCloseBtn.addEventListener('click', () => setFeedbackOpen(false));
+  controls.feedbackCancelBtn.addEventListener('click', () => setFeedbackOpen(false));
+  controls.feedbackModal.addEventListener('click', (event) => {
+    if (event.target === controls.feedbackModal) setFeedbackOpen(false);
+  });
+  controls.feedbackForm.addEventListener('submit', (event) => {
+    void submitFeedback(event);
   });
 }
 

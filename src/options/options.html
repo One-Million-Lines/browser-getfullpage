@@ -170,9 +170,49 @@
       </section>
 
       <footer>
-        <a href="#" id="privacyLink">Privacy</a>
+        <div class="footer-links">
+          <a href="#" id="privacyLink">Privacy</a>
+          <a href="#" id="feedbackLink">Send Feedback</a>
+        </div>
         <span class="muted">GetFullPage — capture stays on your device.</span>
       </footer>
+
+      <div id="feedbackModal" class="feedback-modal" hidden>
+        <div class="feedback-dialog" role="dialog" aria-modal="true" aria-labelledby="feedbackTitle">
+          <div class="feedback-head">
+            <div>
+              <h2 id="feedbackTitle">Send feedback</h2>
+              <p class="hint">Help improve GetFullPage</p>
+            </div>
+            <button id="feedbackCloseBtn" type="button">Close</button>
+          </div>
+          <div id="feedbackSuccess" class="feedback-status success" hidden>Thanks — your feedback was sent.</div>
+          <form id="feedbackForm">
+            <label class="feedback-field" for="feedbackType">
+              <span>Feedback type</span>
+              <select id="feedbackType">
+                <option value="bug">Bug report</option>
+                <option value="suggestion">Suggestion</option>
+                <option value="praise">Praise</option>
+                <option value="other">Other</option>
+              </select>
+            </label>
+            <label class="feedback-field" for="feedbackDescription">
+              <span>Description</span>
+              <textarea id="feedbackDescription" placeholder="Describe your feedback…" maxlength="2000"></textarea>
+            </label>
+            <label class="feedback-honeypot" aria-hidden="true">
+              Leave this empty
+              <input id="feedbackHoneypot" type="text" autocomplete="off" tabindex="-1" />
+            </label>
+            <div id="feedbackError" class="feedback-status error" hidden></div>
+            <div class="feedback-actions">
+              <button id="feedbackCancelBtn" type="button">Cancel</button>
+              <button id="feedbackSubmitBtn" type="submit">Send feedback</button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
 
     <script src="./options.js"></script>
