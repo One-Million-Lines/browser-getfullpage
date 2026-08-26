@@ -1,0 +1,416 @@
+{
+  "extName": {
+    "message": "GetFullPage — Captura de página completa"
+  },
+  "extShortName": {
+    "message": "GetFullPage"
+  },
+  "extDesc": {
+    "message": "Captura una página web completa como imagen o PDF. Un clic, una página completa, sin subir nada. 100% local, sin cuenta."
+  },
+  "actionTitle": {
+    "message": "Capturar página completa (GetFullPage)"
+  },
+  "actionErrorTitle": {
+    "message": "GetFullPage — $1"
+  },
+  "cmdCaptureFullPage": {
+    "message": "Capturar la página completa"
+  },
+  "cmdCaptureViewport": {
+    "message": "Capturar solo la vista visible"
+  },
+  "optionsTitle": {
+    "message": "GetFullPage — Ajustes"
+  },
+  "optionsHeading": {
+    "message": "Ajustes de GetFullPage"
+  },
+  "optionsSub": {
+    "message": "Todo se guarda localmente. Sin cuenta, sin servidor y sin subir nada."
+  },
+  "savedStatus": {
+    "message": "Guardado"
+  },
+  "optionsCaptureOutput": {
+    "message": "Salida de captura"
+  },
+  "defaultFormatLabel": {
+    "message": "Formato predeterminado"
+  },
+  "formatPngLossless": {
+    "message": "PNG (sin pérdida)"
+  },
+  "formatJpeg": {
+    "message": "JPEG"
+  },
+  "jpegQualityLabel": {
+    "message": "Calidad JPEG"
+  },
+  "afterCaptureLabel": {
+    "message": "Después de capturar"
+  },
+  "postCapturePreview": {
+    "message": "Abrir vista previa"
+  },
+  "postCaptureDownload": {
+    "message": "Descarga automática"
+  },
+  "optionsFiles": {
+    "message": "Archivos"
+  },
+  "filenameTemplateLabel": {
+    "message": "Plantilla de nombre"
+  },
+  "filenameTokensHintHtml": {
+    "message": "Variables: <code>{title}</code> <code>{host}</code> <code>{date}</code> <code>{time}</code> <code>{width}</code> <code>{height}</code>. Ejemplo:"
+  },
+  "downloadsSubfolderLabelHtml": {
+    "message": "Subcarpeta de descargas <span class=\"muted\">(opcional)</span>"
+  },
+  "downloadsSubfolderPlaceholder": {
+    "message": "p. ej., screenshots"
+  },
+  "downloadsPermissionHintHtml": {
+    "message": "La descarga automática y las subcarpetas usan el permiso opcional <code>downloads</code> del navegador, solicitado solo cuando las activas."
+  },
+  "mobileCaptureHeadingHtml": {
+    "message": "Captura móvil <span class=\"muted\">(Chromium)</span>"
+  },
+  "captureMobileDefaultLabel": {
+    "message": "Capturar como móvil por defecto"
+  },
+  "deviceLabel": {
+    "message": "Dispositivo"
+  },
+  "mobilePermissionHintHtml": {
+    "message": "Emula <strong>localmente</strong> una vista móvil, la densidad de píxeles y el agente de usuario mediante el permiso opcional <code>debugger</code>, solicitado solo al activarlo. Disponible en navegadores Chromium; cierra DevTools en la página antes de capturar."
+  },
+  "mobileUnsupportedHint": {
+    "message": "La captura móvil está disponible en navegadores basados en Chromium (Chrome, Edge, Brave, Opera, Vivaldi, Arc)."
+  },
+  "captureEngineHeading": {
+    "message": "Motor de captura"
+  },
+  "scrollSettleDelayLabel": {
+    "message": "Espera tras el desplazamiento"
+  },
+  "autoOption": {
+    "message": "Auto"
+  },
+  "freezeAnimationsLabel": {
+    "message": "Congelar animaciones y transiciones CSS durante la captura"
+  },
+  "fixedStickyElementsLabel": {
+    "message": "Elementos fijos / pegajosos"
+  },
+  "fixedHideRepeatedOption": {
+    "message": "Ocultar encabezados/pies repetidos en cortes posteriores"
+  },
+  "fixedKeepAllOption": {
+    "message": "Mantener todos los elementos fijos"
+  },
+  "maxPageHeightLabel": {
+    "message": "Altura máxima de página (px)"
+  },
+  "maxSlicesLabel": {
+    "message": "Máximo de cortes"
+  },
+  "memoryCeilingLabel": {
+    "message": "Límite de memoria (MiB)"
+  },
+  "pdfDefaultsHeading": {
+    "message": "Valores predeterminados de PDF"
+  },
+  "paperLabel": {
+    "message": "Papel"
+  },
+  "paperLetter": {
+    "message": "Carta"
+  },
+  "paperLegal": {
+    "message": "Legal"
+  },
+  "paperFitOption": {
+    "message": "Ajustar al ancho de la imagen"
+  },
+  "orientationLabel": {
+    "message": "Orientación"
+  },
+  "portraitOption": {
+    "message": "Vertical"
+  },
+  "landscapeOption": {
+    "message": "Horizontal"
+  },
+  "marginsLabel": {
+    "message": "Márgenes"
+  },
+  "noneOption": {
+    "message": "Ninguno"
+  },
+  "narrowOption": {
+    "message": "Estrecho"
+  },
+  "normalOption": {
+    "message": "Normal"
+  },
+  "smartPageBreaksLabel": {
+    "message": "Saltos de página inteligentes (evita cortar líneas de texto)"
+  },
+  "pdfFooterLabel": {
+    "message": "Añadir pie con título, URL, fecha y número de página"
+  },
+  "experimentalHeadingHtml": {
+    "message": "Experimental <span class=\"muted\">(funciones)</span>"
+  },
+  "enableEditorLabel": {
+    "message": "Activar editor de anotaciones (P1)"
+  },
+  "enableHistoryLabel": {
+    "message": "Conservar historial local de capturas (P1)"
+  },
+  "resetHeading": {
+    "message": "Restablecer"
+  },
+  "resetSettingsButton": {
+    "message": "Restablecer todos los ajustes"
+  },
+  "privacyLink": {
+    "message": "Privacidad"
+  },
+  "feedbackLink": {
+    "message": "Enviar comentarios"
+  },
+  "footerTagline": {
+    "message": "GetFullPage — la captura permanece en tu dispositivo."
+  },
+  "feedbackTitle": {
+    "message": "Enviar comentarios"
+  },
+  "feedbackSubtitle": {
+    "message": "Ayuda a mejorar GetFullPage"
+  },
+  "closeButton": {
+    "message": "Cerrar"
+  },
+  "feedbackSuccess": {
+    "message": "Gracias — tus comentarios se enviaron."
+  },
+  "feedbackTypeLabel": {
+    "message": "Tipo de comentario"
+  },
+  "feedbackBug": {
+    "message": "Informe de error"
+  },
+  "feedbackSuggestion": {
+    "message": "Sugerencia"
+  },
+  "feedbackPraise": {
+    "message": "Elogio"
+  },
+  "feedbackOther": {
+    "message": "Otro"
+  },
+  "descriptionLabel": {
+    "message": "Descripción"
+  },
+  "feedbackDescriptionPlaceholder": {
+    "message": "Describe tus comentarios…"
+  },
+  "honeypotLabel": {
+    "message": "Deja esto vacío"
+  },
+  "cancelButton": {
+    "message": "Cancelar"
+  },
+  "sendFeedbackButton": {
+    "message": "Enviar comentarios"
+  },
+  "sending": {
+    "message": "Enviando…"
+  },
+  "feedbackDescribeError": {
+    "message": "Describe tus comentarios."
+  },
+  "feedbackSendError": {
+    "message": "No se pudieron enviar los comentarios. Inténtalo de nuevo."
+  },
+  "examplePageTitle": {
+    "message": "Página de ejemplo"
+  },
+  "previewTitle": {
+    "message": "GetFullPage — Vista previa"
+  },
+  "captureActionsAria": {
+    "message": "Acciones de captura"
+  },
+  "downloadPng": {
+    "message": "Descargar PNG"
+  },
+  "downloadJpeg": {
+    "message": "Descargar JPEG"
+  },
+  "exportPdf": {
+    "message": "Exportar PDF"
+  },
+  "copyButton": {
+    "message": "Copiar"
+  },
+  "cropButton": {
+    "message": "Recortar"
+  },
+  "rotateButton": {
+    "message": "Girar"
+  },
+  "resetEdits": {
+    "message": "Restablecer ediciones"
+  },
+  "captureAsMobile": {
+    "message": "Capturar como móvil"
+  },
+  "retakeButton": {
+    "message": "Repetir"
+  },
+  "settingsButton": {
+    "message": "Ajustes"
+  },
+  "zoomControlsAria": {
+    "message": "Controles de zoom"
+  },
+  "fitWidth": {
+    "message": "Ajustar ancho"
+  },
+  "fitPage": {
+    "message": "Ajustar página"
+  },
+  "zoomOutAria": {
+    "message": "Alejar"
+  },
+  "zoomInAria": {
+    "message": "Acercar"
+  },
+  "capturedImageAria": {
+    "message": "Imagen capturada"
+  },
+  "capturedImageAlt": {
+    "message": "Página completa capturada"
+  },
+  "applyCrop": {
+    "message": "Aplicar recorte"
+  },
+  "preparingPreview": {
+    "message": "Preparando vista previa…"
+  },
+  "captureFailedTitle": {
+    "message": "Error de captura"
+  },
+  "retryButton": {
+    "message": "Reintentar"
+  },
+  "clickToolbarInstruction": {
+    "message": "Haz clic en el icono de GetFullPage en la barra de herramientas de la página que quieres capturar."
+  },
+  "metaDimensions": {
+    "message": "$1 × $2 px"
+  },
+  "metaApproxSize": {
+    "message": "~$1"
+  },
+  "mobileLabel": {
+    "message": "Móvil"
+  },
+  "resultTruncated": {
+    "message": "El resultado se truncó."
+  },
+  "mobilePermissionToast": {
+    "message": "La captura móvil necesita el permiso debugger (concédelo para continuar)."
+  },
+  "recaptureDesktop": {
+    "message": "Recapturar como escritorio"
+  },
+  "buildingPdf": {
+    "message": "Creando PDF…"
+  },
+  "clipboardUnsupportedToast": {
+    "message": "Aquí no se admite copiar imágenes al portapapeles — descargando PNG."
+  },
+  "imageCopiedToast": {
+    "message": "Imagen copiada al portapapeles."
+  },
+  "copyFailedToast": {
+    "message": "No se pudo copiar la imagen — descargando PNG."
+  },
+  "cropping": {
+    "message": "Recortando…"
+  },
+  "rotating": {
+    "message": "Girando…"
+  },
+  "stitchingCapture": {
+    "message": "Uniendo captura…"
+  },
+  "preparingCapture": {
+    "message": "Preparando captura…"
+  },
+  "cancelCaptureAria": {
+    "message": "Cancelar captura"
+  },
+  "capturingProgress": {
+    "message": "Capturando $1 de $2…"
+  },
+  "pdfFooterPage": {
+    "message": "Página $1/$2"
+  },
+  "errorRestrictedUrl": {
+    "message": "Esta página no se puede capturar. Las páginas del sistema, extensiones y tiendas del navegador están protegidas."
+  },
+  "errorFileAccessDenied": {
+    "message": "Para capturar archivos locales, activa “Permitir acceso a URLs de archivo” para GetFullPage en los ajustes de extensiones."
+  },
+  "errorTabChanged": {
+    "message": "La pestaña activa cambió durante la captura, así que se detuvo y se restauró la página."
+  },
+  "errorTabNavigated": {
+    "message": "La página navegó durante la captura, así que se detuvo y se restauró la página."
+  },
+  "errorTabInactive": {
+    "message": "La pestaña quedó inactiva durante la captura. Mantén la pestaña enfocada al capturar."
+  },
+  "errorPageTooLarge": {
+    "message": "Esta página supera el límite de memoria configurado. Aumenta el límite en Ajustes o captura una región."
+  },
+  "errorTruncated": {
+    "message": "Esta página siguió creciendo (probablemente desplazamiento infinito). La captura se detuvo en el máximo configurado y se marcó como truncada."
+  },
+  "errorScrollRootImmovable": {
+    "message": "No se pudo mover el contenedor de desplazamiento de la página, así que no se puede capturar la página completa."
+  },
+  "errorCaptureApiFailed": {
+    "message": "La API de capturas del navegador falló varias veces. Inténtalo de nuevo."
+  },
+  "errorEncodeFailed": {
+    "message": "No se pudo codificar la imagen o el PDF. Prueba otro formato o una captura más pequeña."
+  },
+  "errorClipboardUnsupported": {
+    "message": "Aquí no se admite copiar una imagen al portapapeles. Descarga el PNG."
+  },
+  "errorDownloadDenied": {
+    "message": "Se denegó el permiso de descarga. Concédelo en Ajustes o usa la vista previa para guardar."
+  },
+  "errorMobileUnavailable": {
+    "message": "La captura móvil necesita el permiso debugger y está disponible en navegadores Chromium. Actívala en Ajustes y cierra DevTools en la página primero."
+  },
+  "errorStitchFailed": {
+    "message": "No se pudieron combinar los cortes capturados. Inténtalo de nuevo."
+  },
+  "errorAlreadyRunning": {
+    "message": "Ya hay una captura en curso para esta pestaña."
+  },
+  "errorCancelled": {
+    "message": "Captura cancelada."
+  },
+  "errorInternal": {
+    "message": "Algo salió mal durante la captura. Inténtalo de nuevo."
+  }
+}

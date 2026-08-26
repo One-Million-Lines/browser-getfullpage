@@ -1,4 +1,5 @@
 import { CAPTURE_PORT, DEFAULT_SETTLE_DELAY_MS } from '@/shared/constants';
+import { t } from '@/shared/i18n';
 import type {
   BeforeShotArgs,
   ContentEvent,
@@ -79,7 +80,7 @@ function resolveSettle(setting: SettleDelaySetting): number {
 
   function prepare(args: PrepareArgs): PageMeasurement {
     freezePage(args.freezeAnimations);
-    showOverlay('Preparing capture…', () => send({ event: 'cancel' }));
+    showOverlay(t('preparingCapture', undefined, 'Preparing capture…'), () => send({ event: 'cancel' }));
 
     const root = detectScrollRoot();
     const start = getScrollPos(root);

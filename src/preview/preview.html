@@ -3,54 +3,54 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>GetFullPage — Preview</title>
+    <title data-i18n="previewTitle">GetFullPage — Preview</title>
     <link rel="stylesheet" href="./preview.css" />
   </head>
   <body>
-    <header class="toolbar" role="toolbar" aria-label="Capture actions">
+    <header class="toolbar" role="toolbar" aria-label="Capture actions" data-i18n-aria-label="captureActionsAria">
       <div class="brand">
         <img src="../icons/icon-32.png" width="20" height="20" alt="" />
         <span>GetFullPage</span>
       </div>
       <div class="group" id="exportGroup">
-        <button id="btnPng" type="button">Download PNG</button>
-        <button id="btnJpeg" type="button">Download JPEG</button>
-        <button id="btnPdf" type="button">Export PDF</button>
-        <button id="btnCopy" type="button">Copy</button>
+        <button id="btnPng" type="button" data-i18n="downloadPng">Download PNG</button>
+        <button id="btnJpeg" type="button" data-i18n="downloadJpeg">Download JPEG</button>
+        <button id="btnPdf" type="button" data-i18n="exportPdf">Export PDF</button>
+        <button id="btnCopy" type="button" data-i18n="copyButton">Copy</button>
       </div>
       <div class="group" id="editGroup">
-        <button id="btnCrop" type="button" aria-pressed="false">Crop</button>
-        <button id="btnRotate" type="button">Rotate</button>
-        <button id="btnReset" type="button" hidden>Reset edits</button>
+        <button id="btnCrop" type="button" aria-pressed="false" data-i18n="cropButton">Crop</button>
+        <button id="btnRotate" type="button" data-i18n="rotateButton">Rotate</button>
+        <button id="btnReset" type="button" data-i18n="resetEdits" hidden>Reset edits</button>
         <span id="metaDevice" class="pill" hidden></span>
       </div>
       <div class="group spacer">
-        <button id="btnMobile" type="button" hidden>Capture as mobile</button>
-        <button id="btnRetake" type="button">Retake</button>
-        <button id="btnSettings" type="button">Settings</button>
+        <button id="btnMobile" type="button" data-i18n="captureAsMobile" hidden>Capture as mobile</button>
+        <button id="btnRetake" type="button" data-i18n="retakeButton">Retake</button>
+        <button id="btnSettings" type="button" data-i18n="settingsButton">Settings</button>
       </div>
     </header>
 
-    <div class="zoombar" role="toolbar" aria-label="Zoom controls">
-      <button id="btnFitWidth" type="button">Fit width</button>
-      <button id="btnFitPage" type="button">Fit page</button>
-      <button id="zoomOut" type="button" aria-label="Zoom out">−</button>
+    <div class="zoombar" role="toolbar" aria-label="Zoom controls" data-i18n-aria-label="zoomControlsAria">
+      <button id="btnFitWidth" type="button" data-i18n="fitWidth">Fit width</button>
+      <button id="btnFitPage" type="button" data-i18n="fitPage">Fit page</button>
+      <button id="zoomOut" type="button" aria-label="Zoom out" data-i18n-aria-label="zoomOutAria">−</button>
       <span id="zoomLabel" aria-live="polite">100%</span>
-      <button id="zoomIn" type="button" aria-label="Zoom in">+</button>
+      <button id="zoomIn" type="button" aria-label="Zoom in" data-i18n-aria-label="zoomInAria">+</button>
       <button id="zoom100" type="button">100%</button>
     </div>
 
-    <main id="stage" class="stage" tabindex="0" aria-label="Captured image">
+    <main id="stage" class="stage" tabindex="0" aria-label="Captured image" data-i18n-aria-label="capturedImageAria">
       <div id="canvasWrap" class="canvas-wrap">
-        <img id="image" alt="Captured full page" />
+        <img id="image" alt="Captured full page" data-i18n-alt="capturedImageAlt" />
         <div id="cropLayer" class="crop-layer" hidden>
           <div id="cropBox" class="crop-box">
             <span class="handle nw"></span><span class="handle ne"></span>
             <span class="handle sw"></span><span class="handle se"></span>
           </div>
           <div class="crop-actions">
-            <button id="cropApply" type="button">Apply crop</button>
-            <button id="cropCancel" type="button">Cancel</button>
+            <button id="cropApply" type="button" data-i18n="applyCrop">Apply crop</button>
+            <button id="cropCancel" type="button" data-i18n="cancelButton">Cancel</button>
           </div>
         </div>
       </div>
@@ -68,17 +68,17 @@
     <div id="overlay" class="overlay">
       <div class="card">
         <div class="spinner" aria-hidden="true"></div>
-        <p id="overlayText">Preparing preview…</p>
+        <p id="overlayText" data-i18n="preparingPreview">Preparing preview…</p>
       </div>
     </div>
 
     <div id="errorView" class="error-view" hidden>
       <div class="card">
-        <h1 id="errorTitle">Capture failed</h1>
+        <h1 id="errorTitle" data-i18n="captureFailedTitle">Capture failed</h1>
         <p id="errorText"></p>
         <div class="error-actions">
-          <button id="errorRetry" type="button">Retry</button>
-          <button id="errorClose" type="button">Close</button>
+          <button id="errorRetry" type="button" data-i18n="retryButton">Retry</button>
+          <button id="errorClose" type="button" data-i18n="closeButton">Close</button>
         </div>
       </div>
     </div>

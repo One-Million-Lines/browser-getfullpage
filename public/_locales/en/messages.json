@@ -1,0 +1,554 @@
+{
+  "extName": {
+    "message": "GetFullPage — Full Page Screenshot",
+    "description": "Localized extension UI text."
+  },
+  "extShortName": {
+    "message": "GetFullPage",
+    "description": "Localized extension UI text."
+  },
+  "extDesc": {
+    "message": "Capture an entire webpage as one image or PDF. One click, one complete page, nothing uploaded. 100% local, no account.",
+    "description": "Localized extension UI text."
+  },
+  "actionTitle": {
+    "message": "Capture full page (GetFullPage)",
+    "description": "Localized extension UI text."
+  },
+  "actionErrorTitle": {
+    "message": "GetFullPage — $1",
+    "description": "Localized extension UI text."
+  },
+  "cmdCaptureFullPage": {
+    "message": "Capture the full page",
+    "description": "Localized extension UI text."
+  },
+  "cmdCaptureViewport": {
+    "message": "Capture the visible viewport only",
+    "description": "Localized extension UI text."
+  },
+  "optionsTitle": {
+    "message": "GetFullPage — Settings",
+    "description": "Localized extension UI text."
+  },
+  "optionsHeading": {
+    "message": "GetFullPage Settings",
+    "description": "Localized extension UI text."
+  },
+  "optionsSub": {
+    "message": "Everything is stored locally. No account, no server, nothing uploaded.",
+    "description": "Localized extension UI text."
+  },
+  "savedStatus": {
+    "message": "Saved",
+    "description": "Localized extension UI text."
+  },
+  "optionsCaptureOutput": {
+    "message": "Capture output",
+    "description": "Localized extension UI text."
+  },
+  "defaultFormatLabel": {
+    "message": "Default format",
+    "description": "Localized extension UI text."
+  },
+  "formatPngLossless": {
+    "message": "PNG (lossless)",
+    "description": "Localized extension UI text."
+  },
+  "formatJpeg": {
+    "message": "JPEG",
+    "description": "Localized extension UI text."
+  },
+  "jpegQualityLabel": {
+    "message": "JPEG quality",
+    "description": "Localized extension UI text."
+  },
+  "afterCaptureLabel": {
+    "message": "After capture",
+    "description": "Localized extension UI text."
+  },
+  "postCapturePreview": {
+    "message": "Open preview",
+    "description": "Localized extension UI text."
+  },
+  "postCaptureDownload": {
+    "message": "Auto-download",
+    "description": "Localized extension UI text."
+  },
+  "optionsFiles": {
+    "message": "Files",
+    "description": "Localized extension UI text."
+  },
+  "filenameTemplateLabel": {
+    "message": "Filename template",
+    "description": "Localized extension UI text."
+  },
+  "filenameTokensHintHtml": {
+    "message": "Tokens: <code>{title}</code> <code>{host}</code> <code>{date}</code> <code>{time}</code> <code>{width}</code> <code>{height}</code>. Example:",
+    "description": "Localized extension UI text."
+  },
+  "downloadsSubfolderLabelHtml": {
+    "message": "Downloads subfolder <span class=\"muted\">(optional)</span>",
+    "description": "Localized extension UI text."
+  },
+  "downloadsSubfolderPlaceholder": {
+    "message": "e.g. screenshots",
+    "description": "Localized extension UI text."
+  },
+  "downloadsPermissionHintHtml": {
+    "message": "Auto-download and subfolders use the browser’s optional <code>downloads</code> permission, requested only when you enable them.",
+    "description": "Localized extension UI text."
+  },
+  "mobileCaptureHeadingHtml": {
+    "message": "Mobile capture <span class=\"muted\">(Chromium)</span>",
+    "description": "Localized extension UI text."
+  },
+  "captureMobileDefaultLabel": {
+    "message": "Capture as mobile by default",
+    "description": "Localized extension UI text."
+  },
+  "deviceLabel": {
+    "message": "Device",
+    "description": "Localized extension UI text."
+  },
+  "mobilePermissionHintHtml": {
+    "message": "Emulates a phone viewport, pixel ratio, and user-agent <strong>locally</strong> using the optional <code>debugger</code> permission, requested only when you turn this on. Available on Chromium browsers; close DevTools on the page before capturing.",
+    "description": "Localized extension UI text."
+  },
+  "mobileUnsupportedHint": {
+    "message": "Mobile capture is available on Chromium-based browsers (Chrome, Edge, Brave, Opera, Vivaldi, Arc).",
+    "description": "Localized extension UI text."
+  },
+  "captureEngineHeading": {
+    "message": "Capture engine",
+    "description": "Localized extension UI text."
+  },
+  "scrollSettleDelayLabel": {
+    "message": "Scroll settle delay",
+    "description": "Localized extension UI text."
+  },
+  "autoOption": {
+    "message": "Auto",
+    "description": "Localized extension UI text."
+  },
+  "freezeAnimationsLabel": {
+    "message": "Freeze CSS animations & transitions during capture",
+    "description": "Localized extension UI text."
+  },
+  "fixedStickyElementsLabel": {
+    "message": "Fixed / sticky elements",
+    "description": "Localized extension UI text."
+  },
+  "fixedHideRepeatedOption": {
+    "message": "Hide repeated headers/footers on later slices",
+    "description": "Localized extension UI text."
+  },
+  "fixedKeepAllOption": {
+    "message": "Keep all fixed elements",
+    "description": "Localized extension UI text."
+  },
+  "maxPageHeightLabel": {
+    "message": "Maximum page height (px)",
+    "description": "Localized extension UI text."
+  },
+  "maxSlicesLabel": {
+    "message": "Maximum slices",
+    "description": "Localized extension UI text."
+  },
+  "memoryCeilingLabel": {
+    "message": "Memory ceiling (MiB)",
+    "description": "Localized extension UI text."
+  },
+  "pdfDefaultsHeading": {
+    "message": "PDF defaults",
+    "description": "Localized extension UI text."
+  },
+  "paperLabel": {
+    "message": "Paper",
+    "description": "Localized extension UI text."
+  },
+  "paperLetter": {
+    "message": "Letter",
+    "description": "Localized extension UI text."
+  },
+  "paperLegal": {
+    "message": "Legal",
+    "description": "Localized extension UI text."
+  },
+  "paperFitOption": {
+    "message": "Fit to image width",
+    "description": "Localized extension UI text."
+  },
+  "orientationLabel": {
+    "message": "Orientation",
+    "description": "Localized extension UI text."
+  },
+  "portraitOption": {
+    "message": "Portrait",
+    "description": "Localized extension UI text."
+  },
+  "landscapeOption": {
+    "message": "Landscape",
+    "description": "Localized extension UI text."
+  },
+  "marginsLabel": {
+    "message": "Margins",
+    "description": "Localized extension UI text."
+  },
+  "noneOption": {
+    "message": "None",
+    "description": "Localized extension UI text."
+  },
+  "narrowOption": {
+    "message": "Narrow",
+    "description": "Localized extension UI text."
+  },
+  "normalOption": {
+    "message": "Normal",
+    "description": "Localized extension UI text."
+  },
+  "smartPageBreaksLabel": {
+    "message": "Smart page breaks (avoid cutting text lines)",
+    "description": "Localized extension UI text."
+  },
+  "pdfFooterLabel": {
+    "message": "Add footer with title, URL, date & page number",
+    "description": "Localized extension UI text."
+  },
+  "experimentalHeadingHtml": {
+    "message": "Experimental <span class=\"muted\">(feature flags)</span>",
+    "description": "Localized extension UI text."
+  },
+  "enableEditorLabel": {
+    "message": "Enable annotation editor (P1)",
+    "description": "Localized extension UI text."
+  },
+  "enableHistoryLabel": {
+    "message": "Keep local capture history (P1)",
+    "description": "Localized extension UI text."
+  },
+  "resetHeading": {
+    "message": "Reset",
+    "description": "Localized extension UI text."
+  },
+  "resetSettingsButton": {
+    "message": "Reset all settings to defaults",
+    "description": "Localized extension UI text."
+  },
+  "privacyLink": {
+    "message": "Privacy",
+    "description": "Localized extension UI text."
+  },
+  "feedbackLink": {
+    "message": "Send Feedback",
+    "description": "Localized extension UI text."
+  },
+  "footerTagline": {
+    "message": "GetFullPage — capture stays on your device.",
+    "description": "Localized extension UI text."
+  },
+  "feedbackTitle": {
+    "message": "Send feedback",
+    "description": "Localized extension UI text."
+  },
+  "feedbackSubtitle": {
+    "message": "Help improve GetFullPage",
+    "description": "Localized extension UI text."
+  },
+  "closeButton": {
+    "message": "Close",
+    "description": "Localized extension UI text."
+  },
+  "feedbackSuccess": {
+    "message": "Thanks — your feedback was sent.",
+    "description": "Localized extension UI text."
+  },
+  "feedbackTypeLabel": {
+    "message": "Feedback type",
+    "description": "Localized extension UI text."
+  },
+  "feedbackBug": {
+    "message": "Bug report",
+    "description": "Localized extension UI text."
+  },
+  "feedbackSuggestion": {
+    "message": "Suggestion",
+    "description": "Localized extension UI text."
+  },
+  "feedbackPraise": {
+    "message": "Praise",
+    "description": "Localized extension UI text."
+  },
+  "feedbackOther": {
+    "message": "Other",
+    "description": "Localized extension UI text."
+  },
+  "descriptionLabel": {
+    "message": "Description",
+    "description": "Localized extension UI text."
+  },
+  "feedbackDescriptionPlaceholder": {
+    "message": "Describe your feedback…",
+    "description": "Localized extension UI text."
+  },
+  "honeypotLabel": {
+    "message": "Leave this empty",
+    "description": "Localized extension UI text."
+  },
+  "cancelButton": {
+    "message": "Cancel",
+    "description": "Localized extension UI text."
+  },
+  "sendFeedbackButton": {
+    "message": "Send feedback",
+    "description": "Localized extension UI text."
+  },
+  "sending": {
+    "message": "Sending…",
+    "description": "Localized extension UI text."
+  },
+  "feedbackDescribeError": {
+    "message": "Please describe your feedback.",
+    "description": "Localized extension UI text."
+  },
+  "feedbackSendError": {
+    "message": "Could not send feedback. Please try again.",
+    "description": "Localized extension UI text."
+  },
+  "examplePageTitle": {
+    "message": "Example Page",
+    "description": "Localized extension UI text."
+  },
+  "previewTitle": {
+    "message": "GetFullPage — Preview",
+    "description": "Localized extension UI text."
+  },
+  "captureActionsAria": {
+    "message": "Capture actions",
+    "description": "Localized extension UI text."
+  },
+  "downloadPng": {
+    "message": "Download PNG",
+    "description": "Localized extension UI text."
+  },
+  "downloadJpeg": {
+    "message": "Download JPEG",
+    "description": "Localized extension UI text."
+  },
+  "exportPdf": {
+    "message": "Export PDF",
+    "description": "Localized extension UI text."
+  },
+  "copyButton": {
+    "message": "Copy",
+    "description": "Localized extension UI text."
+  },
+  "cropButton": {
+    "message": "Crop",
+    "description": "Localized extension UI text."
+  },
+  "rotateButton": {
+    "message": "Rotate",
+    "description": "Localized extension UI text."
+  },
+  "resetEdits": {
+    "message": "Reset edits",
+    "description": "Localized extension UI text."
+  },
+  "captureAsMobile": {
+    "message": "Capture as mobile",
+    "description": "Localized extension UI text."
+  },
+  "retakeButton": {
+    "message": "Retake",
+    "description": "Localized extension UI text."
+  },
+  "settingsButton": {
+    "message": "Settings",
+    "description": "Localized extension UI text."
+  },
+  "zoomControlsAria": {
+    "message": "Zoom controls",
+    "description": "Localized extension UI text."
+  },
+  "fitWidth": {
+    "message": "Fit width",
+    "description": "Localized extension UI text."
+  },
+  "fitPage": {
+    "message": "Fit page",
+    "description": "Localized extension UI text."
+  },
+  "zoomOutAria": {
+    "message": "Zoom out",
+    "description": "Localized extension UI text."
+  },
+  "zoomInAria": {
+    "message": "Zoom in",
+    "description": "Localized extension UI text."
+  },
+  "capturedImageAria": {
+    "message": "Captured image",
+    "description": "Localized extension UI text."
+  },
+  "capturedImageAlt": {
+    "message": "Captured full page",
+    "description": "Localized extension UI text."
+  },
+  "applyCrop": {
+    "message": "Apply crop",
+    "description": "Localized extension UI text."
+  },
+  "preparingPreview": {
+    "message": "Preparing preview…",
+    "description": "Localized extension UI text."
+  },
+  "captureFailedTitle": {
+    "message": "Capture failed",
+    "description": "Localized extension UI text."
+  },
+  "retryButton": {
+    "message": "Retry",
+    "description": "Localized extension UI text."
+  },
+  "clickToolbarInstruction": {
+    "message": "Click the GetFullPage toolbar icon on the page you want to capture.",
+    "description": "Localized extension UI text."
+  },
+  "metaDimensions": {
+    "message": "$1 × $2 px",
+    "description": "Localized extension UI text."
+  },
+  "metaApproxSize": {
+    "message": "~$1",
+    "description": "Localized extension UI text."
+  },
+  "mobileLabel": {
+    "message": "Mobile",
+    "description": "Localized extension UI text."
+  },
+  "resultTruncated": {
+    "message": "Result was truncated.",
+    "description": "Localized extension UI text."
+  },
+  "mobilePermissionToast": {
+    "message": "Mobile capture needs the debugger permission (grant it to continue).",
+    "description": "Localized extension UI text."
+  },
+  "recaptureDesktop": {
+    "message": "Recapture as desktop",
+    "description": "Localized extension UI text."
+  },
+  "buildingPdf": {
+    "message": "Building PDF…",
+    "description": "Localized extension UI text."
+  },
+  "clipboardUnsupportedToast": {
+    "message": "Clipboard image copy isn’t supported here — downloading PNG instead.",
+    "description": "Localized extension UI text."
+  },
+  "imageCopiedToast": {
+    "message": "Image copied to clipboard.",
+    "description": "Localized extension UI text."
+  },
+  "copyFailedToast": {
+    "message": "Couldn’t copy image — downloading PNG instead.",
+    "description": "Localized extension UI text."
+  },
+  "cropping": {
+    "message": "Cropping…",
+    "description": "Localized extension UI text."
+  },
+  "rotating": {
+    "message": "Rotating…",
+    "description": "Localized extension UI text."
+  },
+  "stitchingCapture": {
+    "message": "Stitching capture…",
+    "description": "Localized extension UI text."
+  },
+  "preparingCapture": {
+    "message": "Preparing capture…",
+    "description": "Localized extension UI text."
+  },
+  "cancelCaptureAria": {
+    "message": "Cancel capture",
+    "description": "Localized extension UI text."
+  },
+  "capturingProgress": {
+    "message": "Capturing $1 of $2…",
+    "description": "Localized extension UI text."
+  },
+  "pdfFooterPage": {
+    "message": "Page $1/$2",
+    "description": "Localized extension UI text."
+  },
+  "errorRestrictedUrl": {
+    "message": "This page can’t be captured. Browser system pages, extension pages, and stores are protected.",
+    "description": "Localized extension UI text."
+  },
+  "errorFileAccessDenied": {
+    "message": "To capture local files, enable “Allow access to file URLs” for GetFullPage in your browser’s extensions settings.",
+    "description": "Localized extension UI text."
+  },
+  "errorTabChanged": {
+    "message": "The active tab changed during capture, so it was stopped and the page restored.",
+    "description": "Localized extension UI text."
+  },
+  "errorTabNavigated": {
+    "message": "The page navigated during capture, so it was stopped and the page restored.",
+    "description": "Localized extension UI text."
+  },
+  "errorTabInactive": {
+    "message": "The tab became inactive during capture. Keep the tab focused while capturing.",
+    "description": "Localized extension UI text."
+  },
+  "errorPageTooLarge": {
+    "message": "This page is larger than the configured memory limit. Increase the limit in Settings or capture a region.",
+    "description": "Localized extension UI text."
+  },
+  "errorTruncated": {
+    "message": "This page kept growing (likely infinite scroll). Capture stopped at the configured maximum and is marked truncated.",
+    "description": "Localized extension UI text."
+  },
+  "errorScrollRootImmovable": {
+    "message": "The page’s scroll container could not be moved, so the full page can’t be captured.",
+    "description": "Localized extension UI text."
+  },
+  "errorCaptureApiFailed": {
+    "message": "The browser’s screenshot API failed repeatedly. Please retry.",
+    "description": "Localized extension UI text."
+  },
+  "errorEncodeFailed": {
+    "message": "The image or PDF could not be encoded. Try a different format or a smaller capture.",
+    "description": "Localized extension UI text."
+  },
+  "errorClipboardUnsupported": {
+    "message": "Copying an image to the clipboard isn’t supported here. Download the PNG instead.",
+    "description": "Localized extension UI text."
+  },
+  "errorDownloadDenied": {
+    "message": "Download permission was denied. Grant it in Settings or use the preview to save.",
+    "description": "Localized extension UI text."
+  },
+  "errorMobileUnavailable": {
+    "message": "Mobile capture needs the debugger permission and is available on Chromium browsers. Enable it in Settings, and close DevTools on the page first.",
+    "description": "Localized extension UI text."
+  },
+  "errorStitchFailed": {
+    "message": "The captured slices could not be combined. Please retry.",
+    "description": "Localized extension UI text."
+  },
+  "errorAlreadyRunning": {
+    "message": "A capture is already running for this tab.",
+    "description": "Localized extension UI text."
+  },
+  "errorCancelled": {
+    "message": "Capture cancelled.",
+    "description": "Localized extension UI text."
+  },
+  "errorInternal": {
+    "message": "Something went wrong during capture. Please retry.",
+    "description": "Localized extension UI text."
+  }
+}

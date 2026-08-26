@@ -5,6 +5,8 @@
  * captured image (spec §5.3, §9 accessibility).
  */
 
+import { t } from '@/shared/i18n';
+
 const HOST_ID = 'getfullpage-overlay-host';
 
 let host: HTMLDivElement | null = null;
@@ -76,8 +78,8 @@ export function showOverlay(message: string, cancel: () => void): void {
 
   const btn = document.createElement('button');
   btn.type = 'button';
-  btn.textContent = 'Cancel';
-  btn.setAttribute('aria-label', 'Cancel capture');
+  btn.textContent = t('cancelButton', undefined, 'Cancel');
+  btn.setAttribute('aria-label', t('cancelCaptureAria', undefined, 'Cancel capture'));
   btn.addEventListener('click', () => onCancel?.());
 
   wrap.append(dot, col, btn);
@@ -92,7 +94,9 @@ export function setStatus(message: string): void {
 export function setProgress(current: number, total: number, message?: string): void {
   if (barEl && total > 0) barEl.style.width = `${Math.round((current / total) * 100)}%`;
   if (message) setStatus(message);
-  else if (total > 0) setStatus(`Capturing ${current} of ${total}…`);
+  else if (total > 0) {
+    setStatus(t('capturingProgress', [String(current), String(total)], `Capturing ${current} of ${total}…`));
+  }
 }
 
 /** Hide without destroying, so it can be restored after a screenshot. */

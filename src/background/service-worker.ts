@@ -25,6 +25,7 @@ import { CAPTURE_PORT } from '@/shared/constants';
 import { resolveDevice } from '@/shared/devices';
 import { CaptureError, toCaptureError } from '@/shared/errors';
 import { hostFromUrl, renderFilename, sanitizeSubfolder } from '@/shared/filename';
+import { t } from '@/shared/i18n';
 import type { RuntimeMessage } from '@/shared/messages';
 import type {
   CaptureId,
@@ -99,7 +100,9 @@ function setBadge(text: string, color = '#4f46e5'): void {
 function setActionError(code: string): void {
   setBadge('!', '#dc2626');
   try {
-    ext.action.setTitle({ title: `GetFullPage — ${CaptureError.friendlyFor(code as never)}` });
+    ext.action.setTitle({
+      title: t('actionErrorTitle', CaptureError.friendlyFor(code as never), `GetFullPage — ${CaptureError.friendlyFor(code as never)}`),
+    });
   } catch {
     /* ignore */
   }
@@ -109,7 +112,7 @@ function clearBadgeSoon(): void {
   setTimeout(() => {
     setBadge('');
     try {
-      ext.action.setTitle({ title: 'Capture full page (GetFullPage)' });
+      ext.action.setTitle({ title: t('actionTitle', undefined, 'Capture full page (GetFullPage)') });
     } catch {
       /* ignore */
     }

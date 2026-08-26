@@ -1,6 +1,7 @@
 import { canvasToBlob, createCanvas, decodeBitmap, fillBackground } from '@/capture/canvas';
 import { MAX_CANVAS_SIDE_PX } from '@/shared/constants';
 import { CaptureError } from '@/shared/errors';
+import { t } from '@/shared/i18n';
 import type { CaptureResult, PdfDefaults } from '@/shared/types';
 import {
   PT_PER_CSS_PX,
@@ -26,7 +27,8 @@ function footerText(meta: CaptureResult, page: number, total: number): string {
   }
   const when = new Date(meta.capturedAt).toLocaleString();
   const title = meta.title ? `${meta.title} · ` : '';
-  return `${title}${host} · ${when} · Page ${page}/${total}`;
+  const pageLabel = t('pdfFooterPage', [String(page), String(total)], `Page ${page}/${total}`);
+  return `${title}${host} · ${when} · ${pageLabel}`;
 }
 
 /** Per-row luminance variance; lower means an emptier row (better break point). */

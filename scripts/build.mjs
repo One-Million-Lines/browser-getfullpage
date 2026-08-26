@@ -154,6 +154,7 @@ async function main() {
 
   // Icons.
   copyDir(resolve(ROOT, 'public/icons'), resolve(dist, 'icons'));
+  copyDir(resolve(ROOT, 'public/_locales'), resolve(dist, '_locales'));
 
   // Permission audit report.
   const report = config.manifestReport(target);

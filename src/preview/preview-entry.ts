@@ -10,6 +10,7 @@ import { buildPdfFromMaster } from '@/export/pdf';
 import { cropImage, rotateImage, type CropRect } from './edit-image';
 import { CaptureError, toCaptureError } from '@/shared/errors';
 import { hostFromUrl, renderFilename } from '@/shared/filename';
+import { localizeDocument, t } from '@/shared/i18n';
 import { ZOOM_MAX, ZOOM_MIN } from '@/shared/constants';
 import type { CaptureResult, CompositeParams, ImageFormat, Settings } from '@/shared/types';
 
@@ -104,7 +105,13 @@ function showError(code: string, tabId?: number): void {
       ext.runtime.sendMessage({ type: 'RETAKE', captureId: state.captureId }).catch(() => undefined);
       window.close();
     } else {
-      toast('Click the GetFullPage toolbar icon on the page you want to capture.');
+      toast(
+        t(
+          'clickToolbarInstruction',
+          undefined,
+          'Click the GetFullPage toolbar icon on the page you want to capture.',
+        ),
+      );
     }
   };
   el.errorClose.onclick = () => window.close();
@@ -161,21 +168,26 @@ function zoomStep(factor: number): void {
 function renderMeta(): void {
   if (!state) return;
   const ext0 = state.settings.defaultFormat === 'jpeg' ? 'jpg' : 'png';
+  const size = formatBytes(state.current.size);
   el.metaName.textContent = filenameFor(ext0);
-  el.metaDims.textContent = `${state.width} × ${state.height} px`;
-  el.metaSize.textContent = `~${formatBytes(state.current.size)}`;
+  el.metaDims.textContent = t(
+    'metaDimensions',
+    [String(state.width), String(state.height)],
+    `${state.width} × ${state.height} px`,
+  );
+  el.metaSize.textContent = t('metaApproxSize', size, `~${size}`);
   el.metaUrl.textContent = state.meta.url;
   el.metaUrl.title = state.meta.url;
   el.metaTime.textContent = new Date(state.meta.capturedAt).toLocaleString();
   if (state.meta.mobile) {
     el.metaDevice.hidden = false;
-    el.metaDevice.textContent = `📱 ${state.meta.deviceLabel ?? 'Mobile'}`;
+    el.metaDevice.textContent = `📱 ${state.meta.deviceLabel ?? t('mobileLabel', undefined, 'Mobile')}`;
   } else {
     el.metaDevice.hidden = true;
   }
   if (state.meta.truncated || state.meta.truncationReason) {
     el.metaWarn.hidden = false;
-    el.metaWarn.textContent = `⚠ ${state.meta.truncationReason ?? 'Result was truncated.'}`;
+    el.metaWarn.textContent = `⚠ ${state.meta.truncationReason ?? t('resultTruncated', undefined, 'Result was truncated.')}`;
   } else {
     el.metaWarn.hidden = true;
   }
@@ -198,7 +210,13 @@ function wireMobileButton(): void {
     if (targetMobile) {
       const granted = await requestPermissions(['debugger']);
       if (!granted) {
-        toast('Mobile capture needs the debugger permission (grant it to continue).');
+        toast(
+          t(
+            'mobilePermissionToast',
+            undefined,
+            'Mobile capture needs the debugger permission (grant it to continue).',
+          ),
+        );
         return;
       }
     }
@@ -212,7 +230,9 @@ function wireMobileButton(): void {
 function updateMobileButton(): void {
   const btn = $<HTMLButtonElement>('btnMobile');
   if (btn.hidden) return;
-  btn.textContent = state?.meta.mobile ? 'Recapture as desktop' : 'Capture as mobile';
+  btn.textContent = state?.meta.mobile
+    ? t('recaptureDesktop', undefined, 'Recapture as desktop')
+    : t('captureAsMobile', undefined, 'Capture as mobile');
 }
 
 /* --------------------------------- exports --------------------------------- */
@@ -233,7 +253,7 @@ async function exportImage(format: ImageFormat): Promise<void> {
 
 async function exportPdf(): Promise<void> {
   if (!state) return;
-  showOverlay('Building PDF…');
+  showOverlay(t('buildingPdf', undefined, 'Building PDF…'));
   try {
     const meta = { ...state.meta, widthPx: state.width, heightPx: state.height };
     const blob = await buildPdfFromMaster(state.current, meta, {
@@ -254,15 +274,21 @@ async function exportPdf(): Promise<void> {
 async function copyImage(): Promise<void> {
   if (!state) return;
   if (!clipboardImageSupported()) {
-    toast('Clipboard image copy isn’t supported here — downloading PNG instead.');
+    toast(
+      t(
+        'clipboardUnsupportedToast',
+        undefined,
+        'Clipboard image copy isn’t supported here — downloading PNG instead.',
+      ),
+    );
     await exportImage('png');
     return;
   }
   try {
     await copyImageToClipboard(state.current);
-    toast('Image copied to clipboard.');
+    toast(t('imageCopiedToast', undefined, 'Image copied to clipboard.'));
   } catch {
-    toast('Couldn’t copy image — downloading PNG instead.');
+    toast(t('copyFailedToast', undefined, 'Couldn’t copy image — downloading PNG instead.'));
     await exportImage('png');
   }
 }
@@ -359,7 +385,7 @@ async function applyCrop(): Promise<void> {
     w: box.width * scaleX,
     h: box.height * scaleY,
   };
-  showOverlay('Cropping…');
+  showOverlay(t('cropping', undefined, 'Cropping…'));
   try {
     const edited = await cropImage(state.current, rect);
     state.dirty = true;
@@ -375,7 +401,7 @@ async function applyCrop(): Promise<void> {
 
 async function rotate(): Promise<void> {
   if (!state) return;
-  showOverlay('Rotating…');
+  showOverlay(t('rotating', undefined, 'Rotating…'));
   try {
     const edited = await rotateImage(state.current, 'cw');
     state.dirty = true;
@@ -450,7 +476,7 @@ async function loadCapture(captureId: string): Promise<void> {
     // Headless compositing did not run; composite from persisted params here.
     const params = await storageGet<CompositeParams>(`composite:${captureId}`);
     if (params) {
-      showOverlay('Stitching capture…');
+      showOverlay(t('stitchingCapture', undefined, 'Stitching capture…'));
       try {
         await compositeCapture(params);
       } catch (e) {
@@ -488,6 +514,7 @@ async function loadCapture(captureId: string): Promise<void> {
 }
 
 async function init(): Promise<void> {
+  localizeDocument();
   wireToolbar();
   setupCropDragging();
 

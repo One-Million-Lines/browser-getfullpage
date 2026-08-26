@@ -66,16 +66,17 @@ export function buildManifest(target: BuildTarget = 'chrome'): Record<string, un
 
   const manifest: Record<string, unknown> = {
     manifest_version: 3,
-    name: PRODUCT.name,
-    short_name: PRODUCT.shortName,
+    name: '__MSG_extName__',
+    short_name: '__MSG_extShortName__',
     version: RELEASE_VERSION,
-    description: trimDescription(PRODUCT.description, 132),
+    default_locale: 'en',
+    description: '__MSG_extDesc__',
     homepage_url: PRODUCT.homepage,
     icons: ICONS,
     permissions,
     optional_permissions: optionalPermissions,
     action: {
-      default_title: 'Capture full page (GetFullPage)',
+      default_title: '__MSG_actionTitle__',
       default_icon: ICONS,
     },
     options_ui: {
@@ -94,10 +95,10 @@ export function buildManifest(target: BuildTarget = 'chrome'): Record<string, un
     commands: {
       'capture-full-page': {
         suggested_key: { default: 'Alt+Shift+P', mac: 'Command+Shift+P' },
-        description: 'Capture the full page',
+        description: '__MSG_cmdCaptureFullPage__',
       },
       'capture-viewport': {
-        description: 'Capture the visible viewport only',
+        description: '__MSG_cmdCaptureViewport__',
       },
     },
   };
@@ -126,12 +127,4 @@ export function manifestReport(target: BuildTarget = 'chrome'): ManifestReport {
     hostPermissions: [],
     rationale: PERMISSION_RATIONALE,
   };
-}
-
-/** Chrome caps the manifest description at 132 chars; trim on a word boundary. */
-function trimDescription(text: string, max: number): string {
-  if (text.length <= max) return text;
-  const cut = text.slice(0, max);
-  const lastSpace = cut.lastIndexOf(' ');
-  return (lastSpace > max - 24 ? cut.slice(0, lastSpace) : cut).replace(/[\s—–-]+$/, '') + '…';
 }

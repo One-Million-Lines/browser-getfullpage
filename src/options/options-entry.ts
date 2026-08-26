@@ -2,8 +2,10 @@ import { loadSettings, resetSettings, saveSettings } from '@/platform/settings-s
 import { requestDownloadsPermission } from '@/platform/downloads';
 import { requestPermissions } from '@/platform/permissions';
 import { hasOffscreen } from '@/platform/browser';
+import { RELEASE_VERSION } from '@/config/product';
 import { DEVICE_PROFILES } from '@/shared/devices';
 import { hostFromUrl, renderFilename } from '@/shared/filename';
+import { localizeDocument, t } from '@/shared/i18n';
 import { DEFAULT_SETTINGS } from '@/shared/settings';
 import type { FixedHandling, ImageFormat, PostCaptureBehavior, SettleDelaySetting, Settings } from '@/shared/types';
 import type { PdfMargin, PdfOrientation } from '@/shared/types';
@@ -67,7 +69,13 @@ function updateFilenamePreview(): void {
   const ext = settings.defaultFormat === 'jpeg' ? 'jpg' : 'png';
   controls.filenamePreview.textContent = renderFilename(
     controls.filenameTemplate.value,
-    { title: 'Example Page', host: hostFromUrl('https://example.com/pricing'), date: new Date(), width: 1280, height: 3400 },
+    {
+      title: t('examplePageTitle', undefined, 'Example Page'),
+      host: hostFromUrl('https://example.com/pricing'),
+      date: new Date(),
+      width: 1280,
+      height: 3400,
+    },
     ext,
   );
 }
@@ -119,14 +127,16 @@ function setFeedbackSubmitting(submitting: boolean): void {
   controls.feedbackCloseBtn.disabled = submitting;
   controls.feedbackCancelBtn.disabled = submitting;
   controls.feedbackSubmitBtn.disabled = submitting;
-  controls.feedbackSubmitBtn.textContent = submitting ? 'Sending…' : 'Send feedback';
+  controls.feedbackSubmitBtn.textContent = submitting
+    ? t('sending', undefined, 'Sending…')
+    : t('sendFeedbackButton', undefined, 'Send feedback');
 }
 
 async function submitFeedback(event: SubmitEvent): Promise<void> {
   event.preventDefault();
   const description = controls.feedbackDescription.value.trim();
   if (!description) {
-    controls.feedbackError.textContent = 'Please describe your feedback.';
+    controls.feedbackError.textContent = t('feedbackDescribeError', undefined, 'Please describe your feedback.');
     controls.feedbackError.hidden = false;
     return;
   }
@@ -139,7 +149,7 @@ async function submitFeedback(event: SubmitEvent): Promise<void> {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         extension: 'getfullpage',
-        version: '1.0.0',
+        version: RELEASE_VERSION,
         type: controls.feedbackType.value,
         description,
         honeypot: controls.feedbackHoneypot.value,
@@ -151,7 +161,7 @@ async function submitFeedback(event: SubmitEvent): Promise<void> {
     controls.feedbackForm.hidden = true;
     controls.feedbackSuccess.hidden = false;
   } catch {
-    controls.feedbackError.textContent = 'Could not send feedback. Please try again.';
+    controls.feedbackError.textContent = t('feedbackSendError', undefined, 'Could not send feedback. Please try again.');
     controls.feedbackError.hidden = false;
   } finally {
     setFeedbackSubmitting(false);
@@ -278,12 +288,16 @@ function gateMobile(): void {
     controls.mobileEmulation.checked = false;
     controls.mobileEmulation.disabled = true;
     controls.mobileDevice.disabled = true;
-    controls.mobilePermHint.textContent =
-      'Mobile capture is available on Chromium-based browsers (Chrome, Edge, Brave, Opera, Vivaldi, Arc).';
+    controls.mobilePermHint.textContent = t(
+      'mobileUnsupportedHint',
+      undefined,
+      'Mobile capture is available on Chromium-based browsers (Chrome, Edge, Brave, Opera, Vivaldi, Arc).',
+    );
   }
 }
 
 async function init(): Promise<void> {
+  localizeDocument();
   settings = await loadSettings();
   populateDevices();
   render();
