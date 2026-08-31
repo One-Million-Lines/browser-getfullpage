@@ -36,25 +36,40 @@ acceptance report.
 
 ---
 
+## Repository layout
+
+```text
+extension/   Chrome/Firefox extension source
+website/     Marketing website for getfullpage.com
+docs/        Product, architecture, and browser-specific documentation
+```
+
+The extension lives in `extension/`. Run all Node/npm commands from that directory.
+
+---
+
 ## Project layout
 
 ```text
-src/
-  background/    command/action handlers, capture state machine, tab validation, coordination
-  content/       measurement, scrolling, page mutation (fixed/sticky), overlay, guaranteed cleanup
-  capture/       plan, geometry, canvas/memory limits, fixed classification, stitching (compositor)
-  offscreen/     Chromium offscreen document that composites off the service worker
-  preview/       preview UI, zoom, crop/rotate, export actions
-  export/        PNG/JPEG re‑encode, self‑contained PDF writer + pagination + smart breaks
-  options/       settings UI and schema migrations
-  platform/      typed cross‑browser API, IndexedDB, downloads, clipboard, offscreen adapters
-  shared/        typed messages, error taxonomy, types, constants, settings, filenames
-  config/        product identity + generated manifests (Chromium / Firefox / Safari)
-scripts/         build pipeline (esbuild) and pure‑Node icon generator
-tests/
-  unit/          Vitest unit tests for the pure logic
-  e2e/           real‑Chromium capture test (Playwright) that verifies stitched pixels
-  fixtures/      deterministic local test pages (spec §10)
+extension/
+  src/
+    background/  command/action handlers, capture state machine, tab validation, coordination
+    content/     measurement, scrolling, page mutation (fixed/sticky), overlay, guaranteed cleanup
+    capture/     plan, geometry, canvas/memory limits, fixed classification, stitching (compositor)
+    offscreen/   Chromium offscreen document that composites off the service worker
+    preview/     preview UI, zoom, crop/rotate, export actions
+    export/      PNG/JPEG re‑encode, self‑contained PDF writer + pagination + smart breaks
+    options/     settings UI and schema migrations
+    platform/    typed cross‑browser API, IndexedDB, downloads, clipboard, offscreen adapters
+    shared/      typed messages, error taxonomy, types, constants, settings, filenames
+    config/      product identity + generated manifests (Chromium / Firefox / Safari)
+  scripts/       build pipeline (esbuild) and pure‑Node icon generator
+  tests/
+    unit/        Vitest unit tests for the pure logic
+    e2e/         real‑Chromium capture test (Playwright) that verifies stitched pixels
+    fixtures/    deterministic local test pages (spec §10)
+website/
+  assets/        Marketing site screenshots and static assets
 ```
 
 The architecture, message contract, and capture algorithm are documented inline and in
@@ -67,6 +82,7 @@ The architecture, message contract, and capture algorithm are documented inline 
 Requirements: **Node ≥ 20**.
 
 ```bash
+cd extension
 npm install          # install dev dependencies
 npm run build        # build the Chrome/Chromium package into dist/
 npm run dev          # rebuild on change (watch mode)
@@ -80,6 +96,7 @@ npm run verify       # typecheck + unit tests + build
 ### Build targets
 
 ```bash
+cd extension
 npm run build:chrome    # → dist/           (Chrome, Edge, Brave, Opera, Vivaldi, Arc)
 npm run build:firefox   # → dist-firefox/   (Firefox, MV3 event page)
 npm run build:all       # both, zipped into dist-zip/
@@ -88,11 +105,11 @@ node scripts/build.mjs --target=safari      # → dist-safari/ (shared code for 
 
 Manifests and icons are **generated**, never hand‑edited:
 
-- `src/config/product.ts` — product identity and version.
-- `src/config/manifest.ts` — the per‑target Manifest V3 document and the permission audit.
-- `scripts/gen-icons.mjs` — brand icons, encoded as PNG in pure Node (no external deps).
+- `extension/src/config/product.ts` — product identity and version.
+- `extension/src/config/manifest.ts` — the per‑target Manifest V3 document and the permission audit.
+- `extension/scripts/gen-icons.mjs` — brand icons, encoded as PNG in pure Node (no external deps).
 
-Each build also writes `dist*/build-report.json`, a machine‑readable permission audit that lists
+Each build also writes `extension/dist*/build-report.json`, a machine‑readable permission audit that lists
 every required/optional permission and the reason it is needed.
 
 ---
@@ -103,14 +120,14 @@ every required/optional permission and the reason it is needed.
 
 1. `npm run build`
 2. Open `chrome://extensions` (or the browser’s equivalent) and enable **Developer mode**.
-3. **Load unpacked** → select the `dist/` folder.
+3. **Load unpacked** → select the `extension/dist/` folder.
 4. Pin the toolbar icon. Click it (or press `Alt+Shift+P`) on any normal page to capture.
 
 **Firefox**
 
 1. `npm run build:firefox`
 2. Open `about:debugging#/runtime/this-firefox` → **Load Temporary Add‑on** → select
-   `dist-firefox/manifest.json`.
+   `extension/dist-firefox/manifest.json`.
 
 **Safari (macOS)** — see [`docs/safari.md`](docs/safari.md).
 

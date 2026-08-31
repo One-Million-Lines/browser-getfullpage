@@ -1,9 +1,13 @@
 node_modules/
+extension/node_modules/
 dist/
+extension/dist/
 dist-firefox/
+extension/dist-firefox/
 dist-safari/
 dist-e2e/
 dist-zip/
+extension/dist-zip/
 .e2e-profile/
 *.zip
 
