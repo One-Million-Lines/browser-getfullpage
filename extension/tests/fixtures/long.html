@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="data:," />
+    <title>Long static fixture</title>
+    <style>
+      body { margin: 0; font-family: system-ui, sans-serif; }
+      .ruler { height: 200px; display: flex; align-items: center; padding-left: 24px; font-size: 22px; color: #fff; }
+      .ruler:nth-child(odd) { background: #1e293b; }
+      .ruler:nth-child(even) { background: #334155; }
+    </style>
+  </head>
+  <body id="content"></body>
+  <script>
+    // 30 numbered 200px bands = 6000px of deterministic content.
+    const body = document.getElementById('content');
+    for (let i = 1; i <= 30; i++) {
+      const d = document.createElement('div');
+      d.className = 'ruler';
+      d.textContent = `Band ${i} — y ≈ ${(i - 1) * 200}px`;
+      body.appendChild(d);
+    }
+  </script>
+</html>

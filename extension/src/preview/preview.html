@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title data-i18n="previewTitle">GetFullPage — Preview</title>
+    <link rel="stylesheet" href="./preview.css" />
+  </head>
+  <body>
+    <header class="toolbar" role="toolbar" aria-label="Capture actions" data-i18n-aria-label="captureActionsAria">
+      <div class="brand">
+        <img src="../icons/icon-32.png" width="20" height="20" alt="" />
+        <span>GetFullPage</span>
+      </div>
+      <div class="group" id="exportGroup">
+        <button id="btnPng" type="button">
+          <svg class="btn-icon" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 1v8M4 6l3 3 3-3M2 12h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="downloadPng">Download PNG</span>
+        </button>
+        <button id="btnJpeg" type="button">
+          <svg class="btn-icon" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 1v8M4 6l3 3 3-3M2 12h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="downloadJpeg">Download JPEG</span>
+        </button>
+        <button id="btnPdf" type="button">
+          <svg class="btn-icon" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="2" y="1" width="10" height="12" rx="1" stroke="currentColor" stroke-width="1.4"/><path d="M5 5h4M5 7.5h4M5 10h2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg><span data-i18n="exportPdf">Export PDF</span>
+        </button>
+        <button id="btnCopy" type="button">
+          <svg class="btn-icon" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="4" y="1" width="8" height="10" rx="1" stroke="currentColor" stroke-width="1.4"/><path d="M2 4v8a1 1 0 001 1h7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg><span data-i18n="copyButton">Copy</span>
+        </button>
+      </div>
+      <div class="group" id="editGroup">
+        <button id="btnCrop" type="button" aria-pressed="false">
+          <svg class="btn-icon" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 4h8v8M4 1v8h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span data-i18n="cropButton">Crop</span>
+        </button>
+        <button id="btnRotate" type="button">
+          <svg class="btn-icon" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M10.5 4A5 5 0 1012 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M10 1.5v3h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="rotateButton">Rotate</span>
+        </button>
+        <button id="btnAnnotate" type="button" aria-pressed="false">
+          <svg class="btn-icon" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M8.5 2.5l3 3L4 13H1v-3L8.5 2.5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg><span data-i18n="annotateButton">Annotate</span>
+        </button>
+        <button id="btnReset" type="button" data-i18n="resetEdits" hidden>Reset edits</button>
+        <span id="metaDevice" class="pill" hidden></span>
+      </div>
+      <div class="group annotate-row" id="annotateGroup" hidden>
+        <span class="toolbar-section-label">Annotate</span>
+        <span class="premium-badge">✦ Premium</span>
+        <button id="btnToolRect" type="button" title="Rectangle" aria-pressed="false">▭</button>
+        <button id="btnToolEllipse" type="button" title="Ellipse" aria-pressed="false">○</button>
+        <button id="btnToolLine" type="button" title="Line" aria-pressed="false">╱</button>
+        <button id="btnToolArrow" type="button" title="Arrow" aria-pressed="false">→</button>
+        <button id="btnToolText" type="button" title="Text" aria-pressed="false">T</button>
+        <button id="btnToolBlur" type="button" title="Blur region (applied on save)" aria-pressed="false">⊞</button>
+        <!-- Stroke colour selector -->
+        <div class="color-picker" id="colorPicker">
+          <button class="color-picker-trigger" id="btnColorPicker" type="button" aria-label="Choose stroke colour" aria-haspopup="true" aria-expanded="false">
+            <span class="color-picker-value" id="colorPickerValue" style="background:#ef334c"></span>
+            <svg width="10" height="6" viewBox="0 0 10 6" aria-hidden="true"><path d="m1 1 4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="color-palette" id="colorPalette" role="menu" aria-label="Stroke colour" hidden>
+            <button class="swatch" type="button" data-color="#000000" style="--swatch-color:#000000" title="Black" aria-label="Black"></button>
+            <button class="swatch active" type="button" data-color="#ef334c" style="--swatch-color:#ef334c" title="Red" aria-label="Red"></button>
+            <button class="swatch" type="button" data-color="#ff8a00" style="--swatch-color:#ff8a00" title="Orange" aria-label="Orange"></button>
+            <button class="swatch" type="button" data-color="#ffde00" style="--swatch-color:#ffde00" title="Yellow" aria-label="Yellow"></button>
+            <button class="swatch" type="button" data-color="#38d44a" style="--swatch-color:#38d44a" title="Green" aria-label="Green"></button>
+            <button class="swatch" type="button" data-color="#33c7c8" style="--swatch-color:#33c7c8" title="Cyan" aria-label="Cyan"></button>
+            <button class="swatch" type="button" data-color="#147ff3" style="--swatch-color:#147ff3" title="Blue" aria-label="Blue"></button>
+            <button class="swatch" type="button" data-color="#8247e5" style="--swatch-color:#8247e5" title="Purple" aria-label="Purple"></button>
+            <button class="swatch" type="button" data-color="#f72b6a" style="--swatch-color:#f72b6a" title="Pink" aria-label="Pink"></button>
+            <button class="swatch" type="button" data-color="#ffffff" style="--swatch-color:#ffffff" title="White" aria-label="White"></button>
+            <span class="palette-divider" aria-hidden="true"></span>
+            <button class="swatch swatch-more" type="button" id="btnCustomColor" title="Custom colour" aria-label="Custom colour"></button>
+          </div>
+          <input id="annotateColor" type="color" value="#ef334c" aria-hidden="true" tabindex="-1" style="position:absolute;width:0;height:0;opacity:0;pointer-events:none;" />
+        </div>
+        <!-- Fill colour (rect & ellipse only) -->
+        <div class="fill-palette" id="fillPalette" aria-label="Fill colour" style="display:none">
+          <span class="toolbar-section-label" style="margin-left:2px">Fill</span>
+          <button class="swatch swatch-nofill active" type="button" data-fill="transparent" title="No fill" aria-label="No fill"></button>
+          <button class="swatch" type="button" data-fill="#22c55e" style="background:#22c55e" title="Green fill" aria-label="Green fill"></button>
+          <button class="swatch" type="button" data-fill="#ef4444" style="background:#ef4444" title="Red fill" aria-label="Red fill"></button>
+          <button class="swatch" type="button" data-fill="#3b82f6" style="background:#3b82f6" title="Blue fill" aria-label="Blue fill"></button>
+          <button class="swatch" type="button" data-fill="rgba(0,0,0,0.35)" style="background:rgba(0,0,0,0.35)" title="Dark fill" aria-label="Dark fill"></button>
+          <button class="swatch swatch-more" type="button" id="btnCustomFill" title="Custom fill" aria-label="Custom fill">+</button>
+          <input id="annotateFill" type="color" value="#22c55e" aria-hidden="true" tabindex="-1" style="position:absolute;width:0;height:0;opacity:0;pointer-events:none;" />
+        </div>
+        <select id="annotateStroke" title="Stroke width" style="width:52px">
+          <option value="2">2px</option>
+          <option value="3" selected>3px</option>
+          <option value="5">5px</option>
+          <option value="8">8px</option>
+          <option value="10">10px</option>
+          <option value="12">12px</option>
+        </select>
+        <button id="btnAnnotateUndo" type="button" title="Undo (Ctrl+Z)" disabled>↩</button>
+        <button id="btnAnnotateRedo" type="button" title="Redo" disabled>↪</button>
+        <button id="btnAnnotateClear" type="button" title="Clear all annotations">✕</button>
+        <button id="btnAnnotateApply" type="button" title="Merge annotations into the image permanently (required before crop/rotate)">Apply</button>
+        <button id="btnAnnotateClose" type="button" title="Close annotation toolbar — annotations are included automatically on export">Close</button>
+      </div>
+      <div class="group spacer">
+        <button id="btnMobile" type="button" data-i18n="captureAsMobile" hidden>Capture as mobile</button>
+        <button id="btnRetake" type="button" data-i18n="retakeButton">Retake</button>
+        <button id="btnSettings" type="button" data-i18n="settingsButton">Settings</button>
+      </div>
+    </header>
+
+    <div class="zoombar" role="toolbar" aria-label="Zoom controls" data-i18n-aria-label="zoomControlsAria">
+      <button id="btnFitWidth" type="button" data-i18n="fitWidth">Fit width</button>
+      <button id="btnFitPage" type="button" data-i18n="fitPage">Fit page</button>
+      <button id="zoomOut" type="button" aria-label="Zoom out" data-i18n-aria-label="zoomOutAria">−</button>
+      <span id="zoomLabel" aria-live="polite">100%</span>
+      <button id="zoomIn" type="button" aria-label="Zoom in" data-i18n-aria-label="zoomInAria">+</button>
+      <button id="zoom100" type="button">100%</button>
+    </div>
+
+    <main id="stage" class="stage" tabindex="0" aria-label="Captured image" data-i18n-aria-label="capturedImageAria">
+      <div id="canvasWrap" class="canvas-wrap">
+        <img id="image" alt="Captured full page" data-i18n-alt="capturedImageAlt" />
+        <div id="cropLayer" class="crop-layer" hidden>
+          <div id="cropBox" class="crop-box">
+            <span class="handle nw"></span><span class="handle ne"></span>
+            <span class="handle sw"></span><span class="handle se"></span>
+          </div>
+          <div class="crop-actions">
+            <button id="cropApply" type="button" data-i18n="applyCrop">Apply crop</button>
+            <button id="cropCancel" type="button" data-i18n="cancelButton">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="statusbar">
+      <span id="metaName" class="mono"></span>
+      <span id="metaDims"></span>
+      <span id="metaSize"></span>
+      <span id="metaUrl" class="mono ellipsis"></span>
+      <span id="metaTime"></span>
+      <span id="metaWarn" class="warn" hidden></span>
+    </footer>
+
+    <div id="overlay" class="overlay">
+      <div class="card">
+        <div class="spinner" aria-hidden="true"></div>
+        <p id="overlayText" data-i18n="preparingPreview">Preparing preview…</p>
+      </div>
+    </div>
+
+    <div id="errorView" class="error-view" hidden>
+      <div class="card">
+        <h1 id="errorTitle" data-i18n="captureFailedTitle">Capture failed</h1>
+        <p id="errorText"></p>
+        <div class="error-actions">
+          <button id="errorRetry" type="button" data-i18n="retryButton">Retry</button>
+          <button id="errorClose" type="button" data-i18n="closeButton">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+    <script src="./preview.js"></script>
+  </body>
+</html>

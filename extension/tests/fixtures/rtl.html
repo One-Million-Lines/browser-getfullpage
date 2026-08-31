@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="data:," />
+    <title>RTL &amp; vertical writing fixture</title>
+    <style>
+      body { margin: 0; font-family: system-ui, sans-serif; }
+      .rtl { padding: 20px; direction: rtl; }
+      .block { height: 200px; margin: 12px 0; background: #ede9fe; padding: 16px; border-radius: 10px; }
+      .vertical { writing-mode: vertical-rl; height: 600px; background: #fef3c7; padding: 16px; margin: 12px 0; }
+    </style>
+  </head>
+  <body>
+    <div class="rtl" id="content">
+      <div class="vertical">وضع الكتابة العمودي — vertical writing mode block</div>
+    </div>
+    <script>
+      const c = document.getElementById('content');
+      for (let i = 1; i <= 12; i++) {
+        const d = document.createElement('div');
+        d.className = 'block';
+        d.textContent = `كتلة ${i} — RTL block ${i}`;
+        c.appendChild(d);
+      }
+    </script>
+  </body>
+</html>

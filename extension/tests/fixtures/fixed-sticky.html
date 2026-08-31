@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="data:," />
+    <title>Fixed / sticky fixture</title>
+    <style>
+      body { margin: 0; font-family: system-ui, sans-serif; }
+      header { position: fixed; top: 0; left: 0; right: 0; height: 56px; background: #4f46e5; color: #fff;
+        display: flex; align-items: center; padding: 0 20px; z-index: 50; }
+      footer { position: fixed; bottom: 0; left: 0; right: 0; height: 44px; background: #0f172a; color: #cbd5e1;
+        display: flex; align-items: center; padding: 0 20px; z-index: 50; }
+      .layout { display: flex; padding-top: 56px; }
+      aside { position: sticky; top: 56px; align-self: flex-start; width: 200px; height: calc(100vh - 100px);
+        background: #e2e8f0; padding: 16px; }
+      main { flex: 1; }
+      .row { height: 180px; border-bottom: 1px solid #cbd5e1; padding: 16px; }
+      .chat { position: fixed; right: 20px; bottom: 64px; width: 56px; height: 56px; border-radius: 50%;
+        background: #f59e0b; z-index: 60; }
+    </style>
+  </head>
+  <body>
+    <header>Fixed header (should appear once at top)</header>
+    <div class="layout">
+      <aside>Sticky sidebar</aside>
+      <main id="main"></main>
+    </div>
+    <footer>Fixed footer (should appear once)</footer>
+    <div class="chat"></div>
+    <script>
+      const main = document.getElementById('main');
+      for (let i = 1; i <= 24; i++) {
+        const d = document.createElement('div');
+        d.className = 'row';
+        d.textContent = `Content row ${i}`;
+        main.appendChild(d);
+      }
+    </script>
+  </body>
+</html>
