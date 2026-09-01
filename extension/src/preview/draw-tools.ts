@@ -102,6 +102,11 @@ export class DrawManager {
     this.emitChange();
   }
 
+  setFontSize(size: number): void {
+    if (Number.isFinite(size) && size > 0) this.currentFontSize = size;
+    this.emitChange();
+  }
+
   setEnabled(enabled: boolean): void {
     this.enabled = enabled;
     this.canvas.style.pointerEvents = enabled ? 'auto' : 'none';
@@ -196,6 +201,7 @@ export class DrawManager {
     this.canvas.addEventListener('pointerdown', (e) => {
       if (!this.enabled) return;
       if (this.currentTool === 'text') {
+        e.preventDefault();
         this.startTextInput(e);
         return;
       }
@@ -251,28 +257,29 @@ export class DrawManager {
     const rect = this.canvas.getBoundingClientRect();
     const scaleX = rect.width / this.imageWidth;
     const scaleY = rect.height / this.imageHeight;
+    const displaySize = Math.max(11, this.currentFontSize * Math.max(scaleX, scaleY));
 
     this.textInput?.remove();
     const input = document.createElement('input');
     input.type = 'text';
-    input.placeholder = 'Type here…';
+    input.placeholder = 'Type, then Enter…';
     input.style.cssText = `
       position: absolute;
       left: ${x * scaleX + this.canvas.offsetLeft}px;
       top: ${y * scaleY + this.canvas.offsetTop}px;
-      z-index: 20;
-      background: rgba(0,0,0,0.7);
+      z-index: 30;
+      background: rgba(0,0,0,0.72);
       color: ${this.currentColor};
-      font: bold ${this.currentFontSize * Math.max(scaleX, scaleY)}px sans-serif;
+      font: bold ${displaySize}px sans-serif;
       border: 1px dashed ${this.currentColor};
-      border-radius: 2px;
+      border-radius: 3px;
       padding: 2px 4px;
       outline: none;
-      min-width: 80px;
+      min-width: 120px;
+      caret-color: ${this.currentColor};
     `;
     this.textInput = input;
     (this.canvas.parentElement ?? document.body).appendChild(input);
-    input.focus();
 
     let committed = false;
     const finish = (save: boolean) => {
@@ -301,10 +308,16 @@ export class DrawManager {
     };
 
     input.addEventListener('keydown', (ev) => {
+      ev.stopPropagation();
       if (ev.key === 'Enter') finish(true);
-      if (ev.key === 'Escape') finish(false);
+      else if (ev.key === 'Escape') finish(false);
     });
-    input.addEventListener('blur', () => finish(true), { once: true });
+    // Attach the blur-commit handler only after focus settles so the creating
+    // gesture cannot immediately blur and discard the empty input.
+    setTimeout(() => {
+      input.focus();
+      input.addEventListener('blur', () => finish(true), { once: true });
+    }, 0);
   }
 
   private redraw(): void {

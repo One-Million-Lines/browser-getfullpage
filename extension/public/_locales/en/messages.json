@@ -363,6 +363,10 @@
     "message": "Retake",
     "description": "Localized extension UI text."
   },
+  "feedbackButton": {
+    "message": "Feedback",
+    "description": "Localized extension UI text."
+  },
   "settingsButton": {
     "message": "Settings",
     "description": "Localized extension UI text."

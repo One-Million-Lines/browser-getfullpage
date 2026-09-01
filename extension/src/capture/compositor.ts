@@ -90,8 +90,6 @@ export async function compositeCapture(params: CompositeParams): Promise<Capture
     truncated: params.truncated,
     truncationReason: params.truncationReason ?? decision.note,
     estimatedBytes: blob.size,
-    mobile: params.mobile,
-    deviceLabel: params.deviceLabel,
   };
 
   await putResult(params.captureId, blob, meta);

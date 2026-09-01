@@ -40,10 +40,8 @@ function prepareE2EBuild() {
   cpSync(DIST, DIST_E2E, { recursive: true });
   const manifestPath = join(DIST_E2E, 'manifest.json');
   const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
-  // Grant host permissions so message-triggered capture is authorised in tests,
-  // and the debugger permission so mobile emulation can attach without a prompt.
+  // Grant host permissions so message-triggered capture is authorised in tests.
   manifest.host_permissions = ['<all_urls>'];
-  manifest.permissions = [...new Set([...manifest.permissions, 'debugger'])];
   writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
 }
 
@@ -255,79 +253,6 @@ async function main() {
 
     log(externalRequests.length === 0, `zero external network requests (got ${externalRequests.length})`);
     if (externalRequests.length) console.log('    external:', externalRequests.join('\n      '));
-
-    /* ----------------------------- mobile capture ----------------------------- */
-    console.log('\n  — mobile emulation —');
-    const responsiveUrl = `http://127.0.0.1:${port}/responsive.html`;
-    const mpage = await context.newPage();
-    mpage.on('console', noteConsole('m-fixture'));
-    await mpage.goto(responsiveUrl, { waitUntil: 'load' });
-    await mpage.waitForTimeout(300);
-
-    // Confirm the page renders the DESKTOP layout (red) at the normal viewport.
-    const desktopColor = await mpage.evaluate(() => {
-      const d = document.querySelector('.box');
-      return getComputedStyle(d).backgroundColor;
-    });
-    log(/220,\s*20,\s*60/.test(desktopColor), `responsive fixture is desktop (red) normally (${desktopColor})`);
-
-    const minfo = await sw.evaluate(async (u) => {
-      const tabs = await chrome.tabs.query({});
-      const tab = tabs.find((t) => t.url && t.url.startsWith(u));
-      return tab ? { tabId: tab.id } : null;
-    }, responsiveUrl);
-    await sw.evaluate((tabId) => chrome.tabs.update(tabId, { active: true }), minfo.tabId);
-    await mpage.waitForTimeout(200);
-
-    const mPreviewPromise = context.waitForEvent('page', {
-      predicate: (p) => p.url().includes('/preview/preview.html'),
-      timeout: 60000,
-    });
-    await relay.evaluate(
-      ({ tabId }) => chrome.runtime.sendMessage({ type: 'CAPTURE_START', tabId, mobile: true }),
-      { tabId: minfo.tabId },
-    );
-
-    const mpreview = await mPreviewPromise;
-    mpreview.on('console', noteConsole('m-preview'));
-    await mpreview.waitForSelector('#image', { timeout: 30000 });
-    await mpreview.waitForFunction(
-      () => {
-        const img = document.getElementById('image');
-        return img && img.complete && img.naturalWidth > 0;
-      },
-      { timeout: 30000 },
-    );
-    const msample = await mpreview.evaluate(async () => {
-      const img = document.getElementById('image');
-      await img.decode();
-      const c = document.createElement('canvas');
-      c.width = img.naturalWidth;
-      c.height = img.naturalHeight;
-      const ctx = c.getContext('2d');
-      ctx.drawImage(img, 0, 0);
-      const d = ctx.getImageData(40, 20, 1, 1).data;
-      return {
-        w: img.naturalWidth,
-        h: img.naturalHeight,
-        top: [d[0], d[1], d[2]],
-        device: document.getElementById('metaDevice').textContent,
-        errorHidden: document.getElementById('errorView').hidden,
-      };
-    });
-    console.log('    mobile sample:', JSON.stringify(msample));
-
-    log(msample.errorHidden, 'mobile preview shows the image');
-    // iPhone 13 profile is 390 CSS px @ 3x → 1170 physical px wide.
-    log(near(msample.w, 1170, 24), `mobile image width ~1170 (390@3x) got ${msample.w}`);
-    log(msample.w < 1280, `mobile image narrower than desktop viewport (${msample.w} < 1280)`);
-    log(colorNear(msample.top, [0, 160, 60]), `mobile media query applied (green layout) got ${msample.top}`);
-    log(/iPhone|390/.test(msample.device || ''), `preview shows the device label (${msample.device})`);
-
-    // The source tab must be restored to desktop after emulation detaches.
-    await mpage.waitForTimeout(300);
-    const innerWidth = await mpage.evaluate(() => window.innerWidth);
-    log(innerWidth > 1000, `emulation cleared; source tab back to desktop width (${innerWidth})`);
 
     log(
       consoleErrors.length === 0,

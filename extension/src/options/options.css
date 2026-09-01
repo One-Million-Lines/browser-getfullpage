@@ -170,6 +170,9 @@ footer a {
   padding: 20px;
   background: rgba(2, 6, 23, 0.55);
 }
+.feedback-modal[hidden] {
+  display: none;
+}
 .feedback-dialog {
   width: min(100%, 420px);
   background: var(--panel);

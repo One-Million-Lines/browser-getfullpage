@@ -41,9 +41,6 @@ const CHROMIUM_PERMISSIONS = [...REQUIRED_PERMISSIONS, 'offscreen'];
 /** Optional, requested at runtime only when a feature needs them. */
 const OPTIONAL_PERMISSIONS = ['downloads'];
 
-/** `debugger` powers mobile device emulation; Chromium-only, requested at runtime. */
-const CHROMIUM_OPTIONAL_PERMISSIONS = [...OPTIONAL_PERMISSIONS, 'debugger'];
-
 const PERMISSION_RATIONALE: Record<string, string> = {
   activeTab:
     'Temporarily access and capture only the tab on which the user explicitly invokes GetFullPage. No permanent access to every site.',
@@ -54,15 +51,12 @@ const PERMISSION_RATIONALE: Record<string, string> = {
     'Chromium only: composite captured slices with canvas access off the service worker, which cannot use the DOM and may be terminated.',
   downloads:
     'Optional. Requested at runtime only when the user enables auto-download or a Downloads subfolder. Manual export uses a user-gesture download and needs no permission.',
-  debugger:
-    'Optional, Chromium only. Requested at runtime only when the user chooses "capture as mobile"; used solely to emulate a mobile viewport/user-agent locally during capture, then detached.',
 };
 
 export function buildManifest(target: BuildTarget = 'chrome'): Record<string, unknown> {
   const isFirefox = target === 'firefox';
   const permissions = isFirefox ? REQUIRED_PERMISSIONS : CHROMIUM_PERMISSIONS;
-  // `debugger` (mobile emulation) is Chromium-only; Firefox/Safari omit it.
-  const optionalPermissions = target === 'chrome' ? CHROMIUM_OPTIONAL_PERMISSIONS : OPTIONAL_PERMISSIONS;
+  const optionalPermissions = OPTIONAL_PERMISSIONS;
 
   const manifest: Record<string, unknown> = {
     manifest_version: 3,

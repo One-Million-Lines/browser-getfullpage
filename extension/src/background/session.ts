@@ -3,10 +3,8 @@ import { putSlice, setMarker } from '@/platform/idb';
 import { decodeBitmap } from '@/capture/canvas';
 import { maybeExtendPlan, planCapture, type PlanOptions } from '@/capture/plan';
 import { captureVisible } from './capture-visible';
-import { MobileEmulator } from './emulation';
 import { PortRpc } from './port-rpc';
 import { CaptureError, isCaptureError } from '@/shared/errors';
-import type { DeviceProfile } from '@/shared/devices';
 import type {
   BeforeShotArgs,
   ProgressArgs,
@@ -30,8 +28,6 @@ export interface RunResult {
   title: string;
   plan: CapturePlan;
   measurement: PageMeasurement;
-  mobile: boolean;
-  deviceLabel?: string;
 }
 
 export interface SessionDeps {
@@ -40,9 +36,6 @@ export interface SessionDeps {
   mode: CaptureMode;
   settings: Settings;
   onProgress: (p: CaptureProgress) => void;
-  /** When set, capture uses mobile device emulation (Chromium only). */
-  mobile?: boolean;
-  device?: DeviceProfile;
 }
 
 /**
@@ -89,7 +82,6 @@ export class CaptureSession {
   }
 
   private plan: CapturePlan | null = null;
-  private emulator: MobileEmulator | null = null;
 
   async run(): Promise<RunResult> {
     const { target, settings, mode } = this.deps;
@@ -98,12 +90,6 @@ export class CaptureSession {
 
       /* ---------------------------- preparing ---------------------------- */
       this.setState('preparing');
-      // Attach mobile device emulation before injecting/measuring so the page
-      // reflows into the emulated viewport and all measurements are mobile.
-      if (this.deps.mobile && this.deps.device) {
-        this.emulator = new MobileEmulator(target.tabId, this.deps.device);
-        await this.emulator.attach();
-      }
       await injectFile(target.tabId, 'content.js');
       const port = await this.waitForPort(8000);
       if (this.cancelled) throw this.cancelReason;
@@ -161,9 +147,7 @@ export class CaptureSession {
 
         let dataUrl: string;
         try {
-          dataUrl = this.emulator
-            ? await this.emulator.captureViewport()
-            : await captureVisible(target.windowId, this.isCancelled);
+          dataUrl = await captureVisible(target.windowId, this.isCancelled);
         } finally {
           await this.rpc.request('afterShot').catch(() => undefined);
         }
@@ -215,8 +199,6 @@ export class CaptureSession {
         title: this.deps.title,
         plan: this.plan,
         measurement,
-        mobile: Boolean(this.emulator),
-        deviceLabel: this.deps.device?.label,
       };
     } catch (e) {
       const err = this.cancelled ? this.cancelReason ?? new CaptureError('CANCELLED') : toErr(e);
@@ -231,13 +213,6 @@ export class CaptureSession {
       this.rpc = null;
       throw err;
     } finally {
-      // Always clear device emulation and detach the debugger, restoring the tab.
-      try {
-        await this.emulator?.detach();
-      } catch {
-        /* best effort */
-      }
-      this.emulator = null;
       await setMarker(null);
     }
   }

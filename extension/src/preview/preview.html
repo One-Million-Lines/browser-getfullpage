@@ -37,7 +37,6 @@
           <svg class="btn-icon" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M8.5 2.5l3 3L4 13H1v-3L8.5 2.5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg><span data-i18n="annotateButton">Annotate</span>
         </button>
         <button id="btnReset" type="button" data-i18n="resetEdits" hidden>Reset edits</button>
-        <span id="metaDevice" class="pill" hidden></span>
       </div>
       <div class="group annotate-row" id="annotateGroup" hidden>
         <span class="toolbar-section-label">Annotate</span>
@@ -89,15 +88,22 @@
           <option value="10">10px</option>
           <option value="12">12px</option>
         </select>
+        <select id="annotateFontSize" title="Text size" style="width:64px;display:none">
+          <option value="14">14 px</option>
+          <option value="20" selected>20 px</option>
+          <option value="28">28 px</option>
+          <option value="40">40 px</option>
+          <option value="56">56 px</option>
+        </select>
         <button id="btnAnnotateUndo" type="button" title="Undo (Ctrl+Z)" disabled>↩</button>
         <button id="btnAnnotateRedo" type="button" title="Redo" disabled>↪</button>
-        <button id="btnAnnotateClear" type="button" title="Clear all annotations">✕</button>
+        <button id="btnAnnotateClear" type="button" title="Remove every annotation you have drawn">Clear</button>
         <button id="btnAnnotateApply" type="button" title="Merge annotations into the image permanently (required before crop/rotate)">Apply</button>
         <button id="btnAnnotateClose" type="button" title="Close annotation toolbar — annotations are included automatically on export">Close</button>
       </div>
       <div class="group spacer">
-        <button id="btnMobile" type="button" data-i18n="captureAsMobile" hidden>Capture as mobile</button>
         <button id="btnRetake" type="button" data-i18n="retakeButton">Retake</button>
+        <button id="btnFeedback" type="button" data-i18n="feedbackButton">Feedback</button>
         <button id="btnSettings" type="button" data-i18n="settingsButton">Settings</button>
       </div>
     </header>

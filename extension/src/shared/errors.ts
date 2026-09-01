@@ -15,7 +15,6 @@ export type CaptureErrorCode =
   | 'ENCODE_FAILED'
   | 'CLIPBOARD_UNSUPPORTED'
   | 'DOWNLOAD_DENIED'
-  | 'MOBILE_UNAVAILABLE'
   | 'STITCH_FAILED'
   | 'ALREADY_RUNNING'
   | 'CANCELLED'
@@ -71,11 +70,6 @@ const FRIENDLY: Record<CaptureErrorCode, { key: string; fallback: string }> = {
   DOWNLOAD_DENIED: {
     key: 'errorDownloadDenied',
     fallback: 'Download permission was denied. Grant it in Settings or use the preview to save.',
-  },
-  MOBILE_UNAVAILABLE: {
-    key: 'errorMobileUnavailable',
-    fallback:
-      'Mobile capture needs the debugger permission and is available on Chromium browsers. Enable it in Settings, and close DevTools on the page first.',
   },
   STITCH_FAILED: {
     key: 'errorStitchFailed',

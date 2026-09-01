@@ -119,8 +119,6 @@ export interface CaptureStartMessage {
   /** Optional explicit tab; defaults to the active tab. */
   tabId?: number;
   mode?: 'full' | 'viewport';
-  /** Force mobile emulation on/off for this capture; defaults to the setting. */
-  mobile?: boolean;
 }
 
 export interface CaptureCancelMessage {
@@ -148,8 +146,6 @@ export interface GetResultMessage {
 export interface RetakeMessage {
   type: 'RETAKE';
   captureId: CaptureId;
-  /** Force mobile emulation on/off for the retake; defaults to the setting. */
-  mobile?: boolean;
 }
 
 export interface MeasuredMessage {

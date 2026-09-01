@@ -96,9 +96,6 @@ export interface CaptureResult {
   truncationReason?: string;
   /** Estimated byte size of the encoded image. */
   estimatedBytes: number;
-  /** Set when the capture used mobile device emulation. */
-  mobile?: boolean;
-  deviceLabel?: string;
 }
 
 /** Identity lock so stale tabs/documents cannot corrupt a session (spec §5.1). */
@@ -151,10 +148,6 @@ export interface Settings {
   maxSlices: number;
   memoryCeilingBytes: number;
   pdf: PdfDefaults;
-  /** Capture using mobile device emulation by default (Chromium only). */
-  mobileEmulation: boolean;
-  /** Selected device profile key (see shared/devices.ts). */
-  mobileDevice: string;
   /** P1 features behind a flag. */
   enableEditor: boolean;
   enableHistory: boolean;
@@ -174,7 +167,4 @@ export interface CompositeParams {
   truncated: boolean;
   truncationReason?: string;
   memoryCeilingBytes: number;
-  /** Set when the capture used mobile device emulation. */
-  mobile?: boolean;
-  deviceLabel?: string;
 }

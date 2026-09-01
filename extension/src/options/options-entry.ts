@@ -1,9 +1,6 @@
 import { loadSettings, resetSettings, saveSettings } from '@/platform/settings-store';
 import { requestDownloadsPermission } from '@/platform/downloads';
-import { requestPermissions } from '@/platform/permissions';
-import { hasOffscreen } from '@/platform/browser';
 import { RELEASE_VERSION } from '@/config/product';
-import { DEVICE_PROFILES } from '@/shared/devices';
 import { hostFromUrl, renderFilename } from '@/shared/filename';
 import { localizeDocument, t } from '@/shared/i18n';
 import { DEFAULT_SETTINGS } from '@/shared/settings';
@@ -33,10 +30,6 @@ const controls = {
   pdfMargin: $<HTMLSelectElement>('pdfMargin'),
   pdfSmartBreaks: $<HTMLInputElement>('pdfSmartBreaks'),
   pdfFooter: $<HTMLInputElement>('pdfFooter'),
-  mobileEmulation: $<HTMLInputElement>('mobileEmulation'),
-  mobileDevice: $<HTMLSelectElement>('mobileDevice'),
-  mobileSection: $('mobileSection'),
-  mobilePermHint: $('mobilePermHint'),
   enableEditor: $<HTMLInputElement>('enableEditor'),
   enableHistory: $<HTMLInputElement>('enableHistory'),
   resetBtn: $<HTMLButtonElement>('resetBtn'),
@@ -98,8 +91,6 @@ function render(): void {
   controls.pdfMargin.value = settings.pdf.margin;
   controls.pdfSmartBreaks.checked = settings.pdf.smartBreaks;
   controls.pdfFooter.checked = settings.pdf.footer;
-  controls.mobileEmulation.checked = settings.mobileEmulation;
-  controls.mobileDevice.value = settings.mobileDevice;
   controls.enableEditor.checked = settings.enableEditor;
   controls.enableHistory.checked = settings.enableHistory;
   controls.downloadsPermHint.hidden = !(settings.postCapture === 'download' || settings.downloadSubfolder);
@@ -186,8 +177,6 @@ function collect(): void {
   settings.pdf.margin = controls.pdfMargin.value as PdfMargin;
   settings.pdf.smartBreaks = controls.pdfSmartBreaks.checked;
   settings.pdf.footer = controls.pdfFooter.checked;
-  settings.mobileEmulation = controls.mobileEmulation.checked;
-  settings.mobileDevice = controls.mobileDevice.value;
   settings.enableEditor = controls.enableEditor.checked;
   settings.enableHistory = controls.enableHistory.checked;
 }
@@ -226,7 +215,6 @@ function wire(): void {
     'pdfMargin',
     'pdfSmartBreaks',
     'pdfFooter',
-    'mobileDevice',
     'enableEditor',
     'enableHistory',
     'filenameTemplate',
@@ -239,17 +227,6 @@ function wire(): void {
   // Permission-triggering controls request on change (a user gesture).
   controls.postCapture.addEventListener('change', () => void onChange(true));
   controls.downloadSubfolder.addEventListener('change', () => void onChange(true));
-
-  // Mobile emulation requests the optional debugger permission when enabled.
-  controls.mobileEmulation.addEventListener('change', async () => {
-    collect();
-    if (settings.mobileEmulation) {
-      const granted = await requestPermissions(['debugger']);
-      if (!granted) settings.mobileEmulation = false;
-    }
-    render();
-    await persist();
-  });
 
   controls.resetBtn.addEventListener('click', async () => {
     settings = await resetSettings();
@@ -271,38 +248,12 @@ function wire(): void {
   });
 }
 
-function populateDevices(): void {
-  controls.mobileDevice.innerHTML = '';
-  for (const d of DEVICE_PROFILES) {
-    const opt = document.createElement('option');
-    opt.value = d.key;
-    opt.textContent = d.label;
-    controls.mobileDevice.appendChild(opt);
-  }
-}
-
-function gateMobile(): void {
-  // Mobile emulation relies on the Chromium debugger protocol.
-  const supported = hasOffscreen();
-  if (!supported) {
-    controls.mobileEmulation.checked = false;
-    controls.mobileEmulation.disabled = true;
-    controls.mobileDevice.disabled = true;
-    controls.mobilePermHint.textContent = t(
-      'mobileUnsupportedHint',
-      undefined,
-      'Mobile capture is available on Chromium-based browsers (Chrome, Edge, Brave, Opera, Vivaldi, Arc).',
-    );
-  }
-}
-
 async function init(): Promise<void> {
   localizeDocument();
   settings = await loadSettings();
-  populateDevices();
   render();
-  gateMobile();
   wire();
+  if (location.hash === '#feedback') setFeedbackOpen(true);
 }
 
 void init();

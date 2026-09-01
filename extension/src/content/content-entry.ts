@@ -38,6 +38,13 @@ function resolveSettle(setting: SettleDelaySetting): number {
   return setting === 'auto' ? DEFAULT_SETTLE_DELAY_MS : setting;
 }
 
+/** Resolve after the browser has committed a paint (two rAFs + a task turn). */
+function nextPaint(): Promise<void> {
+  return new Promise<void>((resolve) => {
+    requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(resolve, 0)));
+  });
+}
+
 (function main() {
   const w = window as WindowWithGuard;
   // A previous capture may have left a controller; tear it down first.
@@ -126,12 +133,16 @@ function resolveSettle(setting: SettleDelaySetting): number {
     };
   }
 
-  function beforeShot(args: BeforeShotArgs): void {
-    if (!ctx) return;
+  function beforeShot(args: BeforeShotArgs): Promise<void> {
+    if (!ctx) return Promise.resolve();
     if (!args.isFirst && ctx.fixedHandling === 'hide-repeated') {
       hideRepeatedFixed(ctx.candidates, window.innerWidth, window.innerHeight);
     }
     hideOverlay();
+    // Wait for the browser to actually paint the hidden overlay (and any fixed
+    // element changes) before the screenshot is taken, so neither appears in the
+    // captured image.
+    return nextPaint();
   }
 
   function afterShot(): void {
@@ -147,7 +158,7 @@ function resolveSettle(setting: SettleDelaySetting): number {
       case 'scrollTo':
         return scrollTo(req.args as ScrollToArgs);
       case 'beforeShot':
-        beforeShot(req.args as BeforeShotArgs);
+        await beforeShot(req.args as BeforeShotArgs);
         return {};
       case 'afterShot':
         afterShot();

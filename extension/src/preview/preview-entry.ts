@@ -1,8 +1,7 @@
-import { ext, hasOffscreen, storageGet } from '@/platform/browser';
+import { ext, storageGet } from '@/platform/browser';
 import { clearSlices, getResult } from '@/platform/idb';
 import { loadSettings } from '@/platform/settings-store';
 import { downloadBlob } from '@/platform/downloads';
-import { requestPermissions } from '@/platform/permissions';
 import { clipboardImageSupported, copyImageToClipboard } from '@/platform/clipboard';
 import { compositeCapture } from '@/capture/compositor';
 import { encodeImage, extForFormat } from '@/export/image';
@@ -11,6 +10,7 @@ import { cropImage, rotateImage, type CropRect } from './edit-image';
 import { DrawManager, applyBlurRegions, type DrawState, type DrawTool } from './draw-tools';
 import { CaptureError, toCaptureError } from '@/shared/errors';
 import { hostFromUrl, renderFilename } from '@/shared/filename';
+import { maybeMountReviewWidget } from '@/shared/review';
 import { localizeDocument, t } from '@/shared/i18n';
 import { ZOOM_MAX, ZOOM_MIN } from '@/shared/constants';
 import type { CaptureResult, CompositeParams, ImageFormat, Settings } from '@/shared/types';
@@ -36,12 +36,12 @@ const el = {
   metaUrl: $('metaUrl'),
   metaTime: $('metaTime'),
   metaWarn: $('metaWarn'),
-  metaDevice: $('metaDevice'),
   cropLayer: $('cropLayer'),
   cropBox: $<HTMLDivElement>('cropBox'),
   annotateGroup: $('annotateGroup'),
   annotateColor: $<HTMLInputElement>('annotateColor'),
   annotateStroke: $<HTMLSelectElement>('annotateStroke'),
+  annotateFontSize: $<HTMLSelectElement>('annotateFontSize'),
   btnAnnotate: $<HTMLButtonElement>('btnAnnotate'),
   btnAnnotateUndo: $<HTMLButtonElement>('btnAnnotateUndo'),
   btnAnnotateRedo: $<HTMLButtonElement>('btnAnnotateRedo'),
@@ -197,60 +197,12 @@ function renderMeta(): void {
   el.metaUrl.textContent = state.meta.url;
   el.metaUrl.title = state.meta.url;
   el.metaTime.textContent = new Date(state.meta.capturedAt).toLocaleString();
-  if (state.meta.mobile) {
-    el.metaDevice.hidden = false;
-    el.metaDevice.textContent = `📱 ${state.meta.deviceLabel ?? t('mobileLabel', undefined, 'Mobile')}`;
-  } else {
-    el.metaDevice.hidden = true;
-  }
   if (state.meta.truncated || state.meta.truncationReason) {
     el.metaWarn.hidden = false;
     el.metaWarn.textContent = `⚠ ${state.meta.truncationReason ?? t('resultTruncated', undefined, 'Result was truncated.')}`;
   } else {
     el.metaWarn.hidden = true;
   }
-  updateMobileButton();
-}
-
-/* ------------------------------- mobile toggle ----------------------------- */
-
-function wireMobileButton(): void {
-  const btn = $<HTMLButtonElement>('btnMobile');
-  // Mobile emulation uses the Chromium debugger protocol; hide elsewhere.
-  if (!hasOffscreen()) {
-    btn.hidden = true;
-    return;
-  }
-  btn.hidden = false;
-  btn.onclick = async () => {
-    if (!state) return;
-    const targetMobile = !state.meta.mobile;
-    if (targetMobile) {
-      const granted = await requestPermissions(['debugger']);
-      if (!granted) {
-        toast(
-          t(
-            'mobilePermissionToast',
-            undefined,
-            'Mobile capture needs the debugger permission (grant it to continue).',
-          ),
-        );
-        return;
-      }
-    }
-    ext.runtime
-      .sendMessage({ type: 'RETAKE', captureId: state.captureId, mobile: targetMobile })
-      .catch(() => undefined);
-    window.close();
-  };
-}
-
-function updateMobileButton(): void {
-  const btn = $<HTMLButtonElement>('btnMobile');
-  if (btn.hidden) return;
-  btn.textContent = state?.meta.mobile
-    ? t('recaptureDesktop', undefined, 'Recapture as desktop')
-    : t('captureAsMobile', undefined, 'Capture as mobile');
 }
 
 /* --------------------------------- exports --------------------------------- */
@@ -512,8 +464,11 @@ function toggleAnnotate(): void {
     }, el.image);
     drawManager.setColor(el.annotateColor.value);
     drawManager.setStrokeWidth(Number(el.annotateStroke.value));
+    drawManager.setFontSize(Number(el.annotateFontSize.value));
     drawManager.setTool('rect');
     el.btnToolRect.setAttribute('aria-pressed', 'true');
+    el.annotateStroke.style.display = '';
+    el.annotateFontSize.style.display = 'none';
   }
 
   if (drawManager) {
@@ -560,11 +515,13 @@ function wireToolbar(): void {
   el.btnAnnotate.onclick = () => toggleAnnotate();
   $<HTMLButtonElement>('btnRetake').onclick = () => {
     if (state) {
-      ext.runtime.sendMessage({ type: 'RETAKE', captureId: state.captureId, mobile: state.meta.mobile }).catch(() => undefined);
+      ext.runtime.sendMessage({ type: 'RETAKE', captureId: state.captureId }).catch(() => undefined);
       window.close();
     }
   };
-  wireMobileButton();
+  $<HTMLButtonElement>('btnFeedback').onclick = () => {
+    void ext.tabs.create({ url: ext.runtime.getURL('options/options.html#feedback') });
+  };
   $<HTMLButtonElement>('btnSettings').onclick = () => {
     if (ext.runtime.openOptionsPage) ext.runtime.openOptionsPage();
   };
@@ -608,10 +565,14 @@ function wireToolbar(): void {
       for (const [button] of toolButtons) button.setAttribute('aria-pressed', 'false');
       btn.setAttribute('aria-pressed', 'true');
       fillPalette.style.display = tool === 'rect' || tool === 'ellipse' ? '' : 'none';
+      // Stroke width is irrelevant for text; show the font-size picker instead.
+      el.annotateStroke.style.display = tool === 'text' ? 'none' : '';
+      el.annotateFontSize.style.display = tool === 'text' ? '' : 'none';
     };
   }
 
   el.annotateStroke.onchange = () => drawManager?.setStrokeWidth(Number(el.annotateStroke.value));
+  el.annotateFontSize.onchange = () => drawManager?.setFontSize(Number(el.annotateFontSize.value));
   el.btnAnnotateUndo.onclick = () => drawManager?.undo();
   el.btnAnnotateRedo.onclick = () => drawManager?.redo();
   el.btnAnnotateClear.onclick = () => drawManager?.clearAll();
@@ -710,6 +671,9 @@ async function loadCapture(captureId: string): Promise<void> {
   setImage(result.blob, result.meta.widthPx, result.meta.heightPx);
   hideOverlay();
   requestAnimationFrame(() => fitWidth());
+
+  // Offer a review once the user has captured enough times (local-only gate).
+  void maybeMountReviewWidget().catch(() => undefined);
 }
 
 async function init(): Promise<void> {

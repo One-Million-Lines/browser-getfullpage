@@ -6,7 +6,6 @@ import {
   JPEG_MAX_QUALITY,
   JPEG_MIN_QUALITY,
 } from './constants';
-import { DEFAULT_DEVICE } from './devices';
 import type { Settings } from './types';
 
 export const SETTINGS_SCHEMA_VERSION = 1;
@@ -32,8 +31,6 @@ export const DEFAULT_SETTINGS: Settings = {
     smartBreaks: true,
     footer: false,
   },
-  mobileEmulation: false,
-  mobileDevice: DEFAULT_DEVICE,
   enableEditor: true,
   enableHistory: false,
   historyLimit: 20,
@@ -67,8 +64,6 @@ export function normalizeSettings(raw: unknown): Settings {
 
   if (out.defaultFormat !== 'png' && out.defaultFormat !== 'jpeg') out.defaultFormat = 'png';
   if (out.postCapture !== 'preview' && out.postCapture !== 'download') out.postCapture = 'preview';
-  out.mobileEmulation = Boolean(r.mobileEmulation ?? base.mobileEmulation);
-  out.mobileDevice = typeof r.mobileDevice === 'string' && r.mobileDevice ? r.mobileDevice : base.mobileDevice;
   return out;
 }
 

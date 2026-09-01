@@ -18,13 +18,11 @@ import { downloadBlob } from '@/platform/downloads';
 import { compositeCapture } from '@/capture/compositor';
 import { encodeImage, extForFormat } from '@/export/image';
 import { CaptureSession } from './session';
-import { hasDebuggerApi } from './emulation';
-import { hasPermissions } from '@/platform/permissions';
 import { documentToken, isCapturableUrl } from './tab-validation';
 import { CAPTURE_PORT } from '@/shared/constants';
-import { resolveDevice } from '@/shared/devices';
 import { CaptureError, toCaptureError } from '@/shared/errors';
 import { hostFromUrl, renderFilename, sanitizeSubfolder } from '@/shared/filename';
+import { recordUsage } from '@/shared/review';
 import { t } from '@/shared/i18n';
 import type { RuntimeMessage } from '@/shared/messages';
 import type {
@@ -143,8 +141,6 @@ function toComposite(run: RunResult, settings: Settings): CompositeParams {
     truncated: run.plan.truncated,
     truncationReason: run.plan.truncationReason,
     memoryCeilingBytes: settings.memoryCeilingBytes,
-    mobile: run.mobile,
-    deviceLabel: run.deviceLabel,
   };
 }
 
@@ -232,6 +228,9 @@ async function finalize(run: RunResult, settings: Settings): Promise<void> {
   // Persist params so the preview can composite even if headless stitching fails.
   await storageSet(compositeKey(run.captureId), composite);
 
+  // Count each successful capture toward the local review prompt.
+  await recordUsage().catch(() => undefined);
+
   if (settings.postCapture === 'download') {
     const ok = await produceResult(composite, downloadOpts(settings));
     if (ok) {
@@ -264,7 +263,6 @@ async function clearStaleState(): Promise<void> {
 async function startCapture(
   tabIdArg?: number,
   mode: CaptureMode = 'full',
-  mobileArg?: boolean,
 ): Promise<void> {
   // Second invocation cancels the active capture (spec §5.1).
   if (activeSession) {
@@ -287,18 +285,6 @@ async function startCapture(
   }
 
   const settings = await loadSettings();
-  const wantMobile = mobileArg ?? settings.mobileEmulation;
-  const device = resolveDevice(settings.mobileDevice);
-
-  // Mobile emulation requires the Chromium debugger API + granted permission.
-  if (wantMobile) {
-    if (!hasDebuggerApi() || !(await hasPermissions(['debugger']))) {
-      setActionError('MOBILE_UNAVAILABLE');
-      await openPreviewError('MOBILE_UNAVAILABLE', tab.id).catch(() => undefined);
-      clearBadgeSoon();
-      return;
-    }
-  }
 
   await clearStaleState();
   const captureId = crypto.randomUUID();
@@ -311,8 +297,6 @@ async function startCapture(
     mode,
     settings,
     onProgress,
-    mobile: wantMobile,
-    device: wantMobile ? device : undefined,
   });
   activeSession = session;
   activeTabId = tab.id;
@@ -337,14 +321,14 @@ async function startCapture(
   }
 }
 
-async function retake(captureId: CaptureId, mobile?: boolean): Promise<void> {
+async function retake(captureId: CaptureId): Promise<void> {
   const target = await storageGet<StoredTarget>(targetKey(captureId));
   if (!target) {
     setActionError('INTERNAL');
     return;
   }
   await focusTab(target.tabId, target.windowId);
-  await startCapture(target.tabId, 'full', mobile);
+  await startCapture(target.tabId, 'full');
 }
 
 /* ------------------------------- event wiring ------------------------------ */
@@ -376,13 +360,13 @@ ext.runtime.onConnect.addListener((port) => {
 ext.runtime.onMessage.addListener((message: RuntimeMessage) => {
   switch (message?.type) {
     case 'CAPTURE_START':
-      void startCapture(message.tabId, message.mode ?? 'full', message.mobile);
+      void startCapture(message.tabId, message.mode ?? 'full');
       return false;
     case 'CAPTURE_CANCEL':
       activeSession?.cancel(new CaptureError('CANCELLED'));
       return false;
     case 'RETAKE':
-      void retake(message.captureId, message.mobile);
+      void retake(message.captureId);
       return false;
     case 'STITCH_COMPLETE': {
       const p = pendingStitch.get(message.captureId);
