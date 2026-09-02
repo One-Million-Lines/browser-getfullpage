@@ -1,6 +1,6 @@
 {
   "name": "getfullpage",
-  "version": "2.1.0",
+  "version": "2.2.2",
   "private": true,
   "description": "GetFullPage — capture an entire webpage as one image or PDF. 100% local, no account, no server, nothing uploaded.",
   "license": "MIT",

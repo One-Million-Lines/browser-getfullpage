@@ -50,7 +50,7 @@
         <!-- Stroke colour selector -->
         <div class="color-picker" id="colorPicker">
           <button class="color-picker-trigger" id="btnColorPicker" type="button" aria-label="Choose stroke colour" aria-haspopup="true" aria-expanded="false">
-            <span class="color-picker-value" id="colorPickerValue" style="background:#ef334c"></span>
+            <span class="color-picker-value color-picker-stroke" id="colorPickerValue" style="--ck-color:#ef334c"></span>
             <svg width="10" height="6" viewBox="0 0 10 6" aria-hidden="true"><path d="m1 1 4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
           <div class="color-palette" id="colorPalette" role="menu" aria-label="Stroke colour" hidden>
@@ -69,16 +69,28 @@
           </div>
           <input id="annotateColor" type="color" value="#ef334c" aria-hidden="true" tabindex="-1" style="position:absolute;width:0;height:0;opacity:0;pointer-events:none;" />
         </div>
-        <!-- Fill colour (rect & ellipse only) -->
-        <div class="fill-palette" id="fillPalette" aria-label="Fill colour" style="display:none">
-          <span class="toolbar-section-label" style="margin-left:2px">Fill</span>
-          <button class="swatch swatch-nofill active" type="button" data-fill="transparent" title="No fill" aria-label="No fill"></button>
-          <button class="swatch" type="button" data-fill="#22c55e" style="background:#22c55e" title="Green fill" aria-label="Green fill"></button>
-          <button class="swatch" type="button" data-fill="#ef4444" style="background:#ef4444" title="Red fill" aria-label="Red fill"></button>
-          <button class="swatch" type="button" data-fill="#3b82f6" style="background:#3b82f6" title="Blue fill" aria-label="Blue fill"></button>
-          <button class="swatch" type="button" data-fill="rgba(0,0,0,0.35)" style="background:rgba(0,0,0,0.35)" title="Dark fill" aria-label="Dark fill"></button>
-          <button class="swatch swatch-more" type="button" id="btnCustomFill" title="Custom fill" aria-label="Custom fill">+</button>
-          <input id="annotateFill" type="color" value="#22c55e" aria-hidden="true" tabindex="-1" style="position:absolute;width:0;height:0;opacity:0;pointer-events:none;" />
+        <!-- Fill colour picker (rect & ellipse only) — same vertical dropdown as stroke -->
+        <div class="color-picker" id="fillColorPicker" style="display:none">
+          <button class="color-picker-trigger" id="btnFillColorPicker" type="button" aria-label="Choose fill colour" aria-haspopup="true" aria-expanded="false">
+            <span class="color-picker-value swatch-nofill" id="fillColorPickerValue"></span>
+            <svg width="10" height="6" viewBox="0 0 10 6" aria-hidden="true"><path d="m1 1 4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="color-palette" id="fillColorPalette" role="menu" aria-label="Fill colour" hidden>
+            <button class="swatch swatch-nofill active" type="button" data-fill="transparent" title="No fill" aria-label="No fill"></button>
+            <button class="swatch" type="button" data-fill="#000000" style="--swatch-color:#000000" title="Black" aria-label="Black"></button>
+            <button class="swatch" type="button" data-fill="#ef334c" style="--swatch-color:#ef334c" title="Red" aria-label="Red"></button>
+            <button class="swatch" type="button" data-fill="#ff8a00" style="--swatch-color:#ff8a00" title="Orange" aria-label="Orange"></button>
+            <button class="swatch" type="button" data-fill="#ffde00" style="--swatch-color:#ffde00" title="Yellow" aria-label="Yellow"></button>
+            <button class="swatch" type="button" data-fill="#38d44a" style="--swatch-color:#38d44a" title="Green" aria-label="Green"></button>
+            <button class="swatch" type="button" data-fill="#33c7c8" style="--swatch-color:#33c7c8" title="Cyan" aria-label="Cyan"></button>
+            <button class="swatch" type="button" data-fill="#147ff3" style="--swatch-color:#147ff3" title="Blue" aria-label="Blue"></button>
+            <button class="swatch" type="button" data-fill="#8247e5" style="--swatch-color:#8247e5" title="Purple" aria-label="Purple"></button>
+            <button class="swatch" type="button" data-fill="#f72b6a" style="--swatch-color:#f72b6a" title="Pink" aria-label="Pink"></button>
+            <button class="swatch" type="button" data-fill="#ffffff" style="--swatch-color:#ffffff" title="White" aria-label="White"></button>
+            <span class="palette-divider" aria-hidden="true"></span>
+            <button class="swatch swatch-more" type="button" id="btnCustomFill" title="Custom fill" aria-label="Custom fill"></button>
+          </div>
+          <input id="annotateFill" type="color" value="#ef334c" aria-hidden="true" tabindex="-1" style="position:absolute;width:0;height:0;opacity:0;pointer-events:none;" />
         </div>
         <select id="annotateStroke" title="Stroke width" style="width:52px">
           <option value="2">2px</option>

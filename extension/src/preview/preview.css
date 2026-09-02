@@ -156,6 +156,22 @@ button.primary {
   border: 2px solid #fff;
   border-radius: 50%;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.25);
+  flex-shrink: 0;
+}
+
+/* Stroke trigger: shows selected color as the circle's border + a diagonal slash inside */
+.color-picker-stroke {
+  border: 3px solid var(--ck-color, #ef334c) !important;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.25) !important;
+  background:
+    linear-gradient(
+      135deg,
+      transparent 42%,
+      var(--ck-color, #ef334c) 43%,
+      var(--ck-color, #ef334c) 57%,
+      transparent 58%
+    ),
+    #1e1e1e !important;
 }
 .color-picker-trigger svg {
   color: rgba(255, 255, 255, 0.55);
@@ -215,18 +231,6 @@ button.primary {
   background: conic-gradient(#f33, #ff0, #0f8, #0df, #73f, #f3a, #f33);
 }
 
-.fill-palette {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-.fill-palette .swatch {
-  width: 28px;
-  height: 28px;
-  min-width: 28px;
-  padding: 0;
-  border-radius: 50%;
-}
 .swatch-nofill {
   background: linear-gradient(135deg, transparent 46%, #ef4444 47%, #ef4444 53%, transparent 54%);
 }

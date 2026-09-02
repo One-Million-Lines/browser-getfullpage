@@ -465,8 +465,8 @@ function toggleAnnotate(): void {
     drawManager.setColor(el.annotateColor.value);
     drawManager.setStrokeWidth(Number(el.annotateStroke.value));
     drawManager.setFontSize(Number(el.annotateFontSize.value));
-    drawManager.setTool('rect');
-    el.btnToolRect.setAttribute('aria-pressed', 'true');
+    drawManager.setTool('arrow');
+    el.btnToolArrow.setAttribute('aria-pressed', 'true');
     el.annotateStroke.style.display = '';
     el.annotateFontSize.style.display = 'none';
   }
@@ -534,22 +534,46 @@ function wireToolbar(): void {
   $<HTMLButtonElement>('cropApply').onclick = () => void applyCrop();
   $<HTMLButtonElement>('cropCancel').onclick = () => toggleCrop();
 
-  const fillPalette = $('fillPalette');
+  const fillColorPicker = $('fillColorPicker');
+  const fillColorPalette = $('fillColorPalette');
+  const fillColorPickerButton = $<HTMLButtonElement>('btnFillColorPicker');
+  const fillColorPickerValue = $('fillColorPickerValue');
   const colorPalette = $('colorPalette');
   const colorPickerButton = $<HTMLButtonElement>('btnColorPicker');
   const colorPickerValue = $('colorPickerValue');
+
   const setColorPaletteOpen = (open: boolean): void => {
     colorPalette.hidden = !open;
     colorPickerButton.setAttribute('aria-expanded', String(open));
   };
+  const setFillPaletteOpen = (open: boolean): void => {
+    fillColorPalette.hidden = !open;
+    fillColorPickerButton.setAttribute('aria-expanded', String(open));
+  };
+
   const selectStrokeColor = (color: string, swatch?: HTMLButtonElement): void => {
     el.annotateColor.value = color;
-    colorPickerValue.style.background = color;
+    colorPickerValue.style.setProperty('--ck-color', color);
     drawManager?.setColor(color);
     colorPalette.querySelectorAll('.swatch').forEach(item => item.classList.remove('active'));
     swatch?.classList.add('active');
   };
+
+  const selectFillColor = (fill: string, swatch?: HTMLButtonElement): void => {
+    drawManager?.setFillColor(fill);
+    if (fill === 'transparent') {
+      fillColorPickerValue.style.removeProperty('background');
+      fillColorPickerValue.classList.add('swatch-nofill');
+    } else {
+      fillColorPickerValue.style.background = fill;
+      fillColorPickerValue.classList.remove('swatch-nofill');
+    }
+    fillColorPalette.querySelectorAll('.swatch').forEach(s => s.classList.remove('active'));
+    swatch?.classList.add('active');
+  };
+
   colorPickerButton.onclick = () => setColorPaletteOpen(colorPalette.hidden);
+  fillColorPickerButton.onclick = () => setFillPaletteOpen(fillColorPalette.hidden);
   const toolButtons: Array<[HTMLButtonElement, DrawTool]> = [
     [el.btnToolRect, 'rect'],
     [el.btnToolEllipse, 'ellipse'],
@@ -564,7 +588,9 @@ function wireToolbar(): void {
       drawManager.setTool(tool);
       for (const [button] of toolButtons) button.setAttribute('aria-pressed', 'false');
       btn.setAttribute('aria-pressed', 'true');
-      fillPalette.style.display = tool === 'rect' || tool === 'ellipse' ? '' : 'none';
+      const hasFill = tool === 'rect' || tool === 'ellipse';
+      fillColorPicker.style.display = hasFill ? '' : 'none';
+      if (!hasFill) setFillPaletteOpen(false);
       // Stroke width is irrelevant for text; show the font-size picker instead.
       el.annotateStroke.style.display = tool === 'text' ? 'none' : '';
       el.annotateFontSize.style.display = tool === 'text' ? '' : 'none';
@@ -579,30 +605,24 @@ function wireToolbar(): void {
   el.btnAnnotateApply.onclick = () => void applyAnnotations();
   el.btnAnnotateClose.onclick = () => toggleAnnotate();
 
-  // Color swatches
+  // Color swatches (stroke palette)
   el.annotateGroup.addEventListener('click', (e) => {
     const target = e.target as HTMLElement;
     const swatch = target.closest<HTMLButtonElement>('#colorPalette .swatch:not(.swatch-more)');
     if (swatch && swatch.dataset.color) {
-      const color = swatch.dataset.color;
-      selectStrokeColor(color, swatch);
+      selectStrokeColor(swatch.dataset.color, swatch);
       setColorPaletteOpen(false);
     }
-    const fillSwatch = target.closest<HTMLButtonElement>('#fillPalette .swatch:not(.swatch-more)');
+    const fillSwatch = target.closest<HTMLButtonElement>('#fillColorPalette .swatch:not(.swatch-more)');
     if (fillSwatch) {
-      const fill = fillSwatch.dataset.fill ?? 'transparent';
-      drawManager?.setFillColor(fill);
-      el.annotateGroup.querySelectorAll('#fillPalette .swatch').forEach(s => s.classList.remove('active'));
-      fillSwatch.classList.add('active');
+      selectFillColor(fillSwatch.dataset.fill ?? 'transparent', fillSwatch);
+      setFillPaletteOpen(false);
     }
   });
   $<HTMLButtonElement>('btnCustomColor').onclick = () => el.annotateColor.click();
   el.annotateColor.oninput = () => selectStrokeColor(el.annotateColor.value);
   $<HTMLButtonElement>('btnCustomFill').onclick = () => $<HTMLInputElement>('annotateFill').click();
-  $<HTMLInputElement>('annotateFill').oninput = (e) => {
-    const color = (e.target as HTMLInputElement).value;
-    drawManager?.setFillColor(color);
-  };
+  $<HTMLInputElement>('annotateFill').oninput = (e) => selectFillColor((e.target as HTMLInputElement).value);
 
   window.addEventListener('keydown', (e) => {
     if (e.target instanceof HTMLInputElement) return;
@@ -610,11 +630,13 @@ function wireToolbar(): void {
     else if (e.key === '-') zoomStep(0.8);
     else if (e.key === '0') setZoom(1);
     else if (e.key === 'Escape' && !colorPalette.hidden) setColorPaletteOpen(false);
+    else if (e.key === 'Escape' && !fillColorPalette.hidden) setFillPaletteOpen(false);
     else if (e.key === 'Escape' && cropActive) toggleCrop();
   });
 
   document.addEventListener('click', (e) => {
     if (!(e.target instanceof Element) || !e.target.closest('#colorPicker')) setColorPaletteOpen(false);
+    if (!(e.target instanceof Element) || !e.target.closest('#fillColorPicker')) setFillPaletteOpen(false);
   });
 
   window.addEventListener('beforeunload', (e) => {

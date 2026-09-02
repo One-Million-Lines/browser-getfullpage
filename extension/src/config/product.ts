@@ -1,6 +1,6 @@
 /** Product identity and release metadata. Manifests are generated, not hand-edited. */
 
-export const RELEASE_VERSION = '2.1.0';
+export const RELEASE_VERSION = '2.2.2';
 
 /** Baseline that reliably supports MV3 service workers + offscreen documents. */
 export const MINIMUM_CHROME_VERSION = '116';
@@ -28,7 +28,7 @@ export const REVIEW = {
    * published extension id once the listing is live.
    */
   chromeStoreReviewUrl:
-    'https://chromewebstore.google.com/detail/REPLACE_WITH_EXTENSION_ID/reviews',
+    'https://chromewebstore.google.com/detail/ainacikdhkbekbdlfdjbdamkienblcep/reviews',
   /** Successful captures before the review prompt first appears. */
   promptAfterUses: 3,
   /** Shared feedback backend; star ratings post here with a `stars` field. */

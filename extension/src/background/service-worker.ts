@@ -86,6 +86,8 @@ function stitchViaOffscreen(
 
 /* ------------------------------ action badge ------------------------------- */
 
+const LOG = '[GFP]';
+
 function setBadge(text: string, color = '#4f46e5'): void {
   try {
     ext.action.setBadgeText({ text });
@@ -96,6 +98,7 @@ function setBadge(text: string, color = '#4f46e5'): void {
 }
 
 function setActionError(code: string): void {
+  console.error(LOG, 'capture error:', code);
   setBadge('!', '#dc2626');
   try {
     ext.action.setTitle({
@@ -120,9 +123,14 @@ function clearBadgeSoon(): void {
 function onProgress(p: CaptureProgress): void {
   if (p.state === 'capturing' && p.total > 0) {
     setBadge(`${Math.round((p.current / p.total) * 100)}`);
-  } else if (p.state === 'preparing' || p.state === 'measuring') {
+  } else if (p.state === 'preparing') {
+    console.log(LOG, 'preparing capture…');
+    setBadge('…');
+  } else if (p.state === 'measuring') {
+    console.log(LOG, 'measuring page…');
     setBadge('…');
   } else if (p.state === 'stitching') {
+    console.log(LOG, 'stitching result…');
     setBadge('✓', '#16a34a');
   }
   ext.runtime.sendMessage({ type: 'CAPTURE_PROGRESS', progress: p }).catch(() => undefined);
@@ -266,12 +274,14 @@ async function startCapture(
 ): Promise<void> {
   // Second invocation cancels the active capture (spec §5.1).
   if (activeSession) {
+    console.log(LOG, 'second invocation — cancelling active session');
     activeSession.cancel(new CaptureError('CANCELLED'));
     return;
   }
 
   const tab = tabIdArg != null ? await getTab(tabIdArg) : await queryActiveTab();
   if (!tab || tab.id == null || tab.windowId == null) {
+    console.error(LOG, 'startCapture: could not resolve tab (tabIdArg:', tabIdArg, ')');
     setActionError('INTERNAL');
     clearBadgeSoon();
     return;
@@ -279,10 +289,13 @@ async function startCapture(
 
   const check = isCapturableUrl(tab.url);
   if (!check.ok) {
+    console.error(LOG, 'startCapture: URL not capturable —', check.code ?? 'RESTRICTED_URL', '— tabId:', tab.id);
     setActionError(check.code ?? 'RESTRICTED_URL');
     clearBadgeSoon();
     return;
   }
+
+  console.log(LOG, 'startCapture: mode =', mode, '| tabId =', tab.id, '| url =', (tab.url ?? '').slice(0, 80));
 
   const settings = await loadSettings();
 
@@ -304,13 +317,17 @@ async function startCapture(
   try {
     const run = await session.run();
     await finalize(run, settings);
+    console.log(LOG, 'capture complete — mode:', mode, '| tabId:', tab.id);
     clearBadgeSoon();
   } catch (e) {
     const err = toCaptureError(e);
     await purgeAll(captureId);
     if (err.code !== 'CANCELLED') {
+      console.error(LOG, 'capture failed:', err.code, err.message || '', '| tabId:', tab.id);
       setActionError(err.code);
       await openPreviewError(err.code, tab.id).catch(() => undefined);
+    } else {
+      console.log(LOG, 'capture cancelled by user');
     }
     clearBadgeSoon();
   } finally {

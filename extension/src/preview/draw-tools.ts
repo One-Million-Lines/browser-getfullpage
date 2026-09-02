@@ -33,7 +33,7 @@ export class DrawManager {
   private shapes: DrawShape[] = [];
   private undoStack: DrawShape[][] = [];
   private redoStack: DrawShape[][] = [];
-  private currentTool: DrawTool = 'rect';
+  private currentTool: DrawTool = 'arrow';
   private currentColor = '#22c55e';
   private currentFill = 'transparent';
   private currentStrokeWidth = 3;

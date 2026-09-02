@@ -72,6 +72,7 @@ export function buildManifest(target: BuildTarget = 'chrome'): Record<string, un
     action: {
       default_title: '__MSG_actionTitle__',
       default_icon: ICONS,
+      default_popup: 'popup/popup.html',
     },
     options_ui: {
       page: 'options/options.html',
@@ -82,7 +83,7 @@ export function buildManifest(target: BuildTarget = 'chrome'): Record<string, un
     },
     web_accessible_resources: [
       {
-        resources: ['preview/preview.html', 'icons/*'],
+        resources: ['preview/preview.html', 'popup/popup.html', 'icons/*'],
         matches: ['<all_urls>'],
       },
     ],

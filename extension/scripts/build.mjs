@@ -58,6 +58,7 @@ function entryPoints(dist) {
     { in: resolve(SRC, 'offscreen/offscreen-entry.ts'), out: resolve(dist, 'offscreen.js') },
     { in: resolve(SRC, 'preview/preview-entry.ts'), out: resolve(dist, 'preview/preview.js') },
     { in: resolve(SRC, 'options/options-entry.ts'), out: resolve(dist, 'options/options.js') },
+    { in: resolve(SRC, 'popup/popup-entry.ts'), out: resolve(dist, 'popup/popup.js') },
   ];
 }
 
@@ -147,6 +148,8 @@ async function main() {
   copyFile(resolve(SRC, 'preview/preview.css'), resolve(dist, 'preview/preview.css'));
   copyFile(resolve(SRC, 'options/options.html'), resolve(dist, 'options/options.html'));
   copyFile(resolve(SRC, 'options/options.css'), resolve(dist, 'options/options.css'));
+  copyFile(resolve(SRC, 'popup/popup.html'), resolve(dist, 'popup/popup.html'));
+  copyFile(resolve(SRC, 'popup/popup.css'), resolve(dist, 'popup/popup.css'));
 
   // Manifest (generated from typed config, never hand-edited).
   const manifest = config.buildManifest(target);
